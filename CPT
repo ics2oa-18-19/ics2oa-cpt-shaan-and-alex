@@ -4,6 +4,8 @@ import random
 WIDTH = 1365
 HEIGHT = 710
 
+current_screen = "menu"
+
 x = 0
 y = 0
 
@@ -40,30 +42,38 @@ up_pressed = False
 down_pressed = False
 
 def update(delta_time):
-    global up_pressed, down_pressed, x, y
-    if up_pressed:
-        y += 5
-    if down_pressed:
-        y -= 5
+    global up_pressed, down_pressed, x, y, current_screen
+    if current_screen == "play":
+        if up_pressed:
+            y += 5
+        if down_pressed:
+            y -= 5
 
 
 def on_draw():
     global x, y, wall1
     arcade.start_render()
     # Draw in here...
-    draw_helicopter(x, y)
-    for wallb in bottom_walls:
-        draw_wallb(wallb)
-    for wallt in top_walls:
-        draw_wallt(wallt)
+    if current_screen == "menu":
+        arcade.draw_text("HOPPY HELICOPTER", HEIGHT/2, WIDTH/2, arcade.color.BLACK)
+        arcade.draw_text("Press space to play", HEIGHT/2, WIDTH/2 - 40, arcade.color.BLACK)
+    if current_screen == "play":
+        draw_helicopter(x, y)
+        for wallb in bottom_walls:
+            draw_wallb(wallb)
+        for wallt in top_walls:
+            draw_wallt(wallt)
 
 def on_key_press(key, modifiers):
-    global up_pressed
-    if key == arcade.key.W:
-        up_pressed = True
-    global down_pressed
-    if key == arcade.key.S:
-        down_pressed = True
+    global up_pressed, down_pressed, current_screen
+    if current_screen == "menu":
+        if key == arcade.key.SPACE:
+            current_screen = "play"
+    if current_screen == "play":
+        if key == arcade.key.W:
+            up_pressed = True
+        if key == arcade.key.S:
+            down_pressed = True
 
 
 def on_key_release(key, modifiers):
