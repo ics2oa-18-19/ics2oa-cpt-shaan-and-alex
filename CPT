@@ -9,7 +9,7 @@ current_screen = "menu"
 x = 0
 y = 0
 
-#wall
+#wall code
 
 WALLb_X = 0
 WALLb_Y = 1
