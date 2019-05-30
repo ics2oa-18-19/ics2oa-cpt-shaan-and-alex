@@ -1,152 +1,144 @@
-import arcade
-import random
-
-WIDTH = 1365
-HEIGHT = 710
-
-current_screen = "menu"
-
-x = 0
-y = 0
-
-
-#wall
-
-WALLb_X = 0
-WALLb_Y = 1
-WALLb_WIDTH = 2
-WALLb_HEIGHT = 3
-WALLb_IS_HIT = 4
-WALLb_COLOR = 5
-WALLb_MOVEMENT = 6
-
-wallb1 = [400, 0, 100, random.randrange(0, HEIGHT-200), False, arcade.color.MAROON, True]
-wallb2 = [700, 0, 100, random.randrange(0, HEIGHT-200), False, arcade.color.MAROON, True]
-wallb3 = [1000, 0, 100, random.randrange(0, HEIGHT-200), False, arcade.color.MAROON, True]
-wallb4 = [1300, 0, 100, random.randrange(0, HEIGHT-200), False, arcade.color.MAROON, True]
-bottom_walls = [wallb1, wallb2, wallb3, wallb4]
-
-WALLt_X = 0
-WALLt_Y = 1
-WALLt_WIDTH = 2
-WALLt_HEIGHT = 3
-WALLt_IS_HIT = 4
-WALLt_COLOR = 5
-WALLt_MOVEMENT = 6
-
-wallt1 = [400, wallb1[WALLb_HEIGHT] + 200, 100, HEIGHT - wallb1[WALLb_HEIGHT], False, arcade.color.MAROON, True]
-wallt2 = [700, wallb2[WALLb_HEIGHT] + 200, 100, HEIGHT - wallb2[WALLb_HEIGHT], False, arcade.color.MAROON, True]
-wallt3 = [1000, wallb3[WALLb_HEIGHT] + 200, 100, HEIGHT - wallb3[WALLb_HEIGHT], False, arcade.color.MAROON, True]
-wallt4 = [1300, wallb4[WALLb_HEIGHT] + 200, 100, HEIGHT - wallb4[WALLb_HEIGHT], False, arcade.color.MAROON, True]
-top_walls = [wallt1, wallt2, wallt3, wallt4]
-up_pressed = False
-down_pressed = False
-
-def update(delta_time):
-    global up_pressed, down_pressed, x, y, current_screen, top_walls, bottom_walls
-    if current_screen == "play":
-        if up_pressed:
-            y += 5
-        if down_pressed:
-            y -= 5
-        for _ in top_walls:
-            wallt1[WALLt_X] -= 1
-            wallt2[WALLt_X] -= 1
-            wallt3[WALLt_X] -= 1
-            wallt4[WALLt_X] -= 1
-        for _ in bottom_walls:
-            wallb1[WALLb_X] -= 1
-            wallb2[WALLb_X] -= 1
-            wallb3[WALLb_X] -= 1
-            wallb4[WALLb_X] -= 1
-
-
-def on_draw():
-    global x, y, wall1
-    arcade.start_render()
-    # Draw in here...
-    if current_screen == "menu":
-        arcade.draw_text("HOPPY HELICOPTER", HEIGHT/2, WIDTH/2, arcade.color.BLACK)
-        arcade.draw_text("Press space to play", HEIGHT/2, WIDTH/2 - 40, arcade.color.BLACK)
-    if current_screen == "play":
-        draw_helicopter(x, y)
-        for wallb in bottom_walls:
-            draw_wallb(wallb)
-        for wallt in top_walls:
-            draw_wallt(wallt)
-
-def on_key_press(key, modifiers):
-    global up_pressed, down_pressed, current_screen
-    if current_screen == "menu":
-        if key == arcade.key.SPACE:
-            current_screen = "play"
-    if current_screen == "play":
-        if key == arcade.key.W:
-            up_pressed = True
-        if key == arcade.key.S:
-            down_pressed = True
-        if key == arcade.key.ESCAPE:
-            current_screen = "menu"
-
-
-def on_key_release(key, modifiers):
-    global up_pressed
-    if key == arcade.key.W:
-        up_pressed = False
-    global down_pressed
-    if key == arcade.key.S:
-        down_pressed = False
-
-
-def on_mouse_press(x, y, button, modifiers):
-    pass
-
-
-def setup():
-    arcade.open_window(WIDTH, HEIGHT, "My Arcade Game")
-    arcade.set_background_color(arcade.color.LIGHT_BLUE)
-    arcade.schedule(update, 1 / 60)
-
-    # Override arcade window methods
-    window = arcade.get_window()
-    window.on_draw = on_draw
-    window.on_key_press = on_key_press
-    window.on_key_release = on_key_release
-    window.on_mouse_press = on_mouse_press
-
-    arcade.run()
-
-def draw_wallb(wallb):
-    arcade.draw_xywh_rectangle_filled(wallb[WALLb_X],
-                                      wallb[WALLb_Y],
-                                      wallb[WALLb_WIDTH],
-                                      wallb[WALLb_HEIGHT],
-                                      wallb[WALLb_COLOR])
-
-
-def draw_wallt(wallt):
-    arcade.draw_xywh_rectangle_filled(wallt[WALLt_X],
-                                      wallt[WALLt_Y],
-                                      wallt[WALLt_WIDTH],
-                                      wallt[WALLt_HEIGHT],
-                                      wallt[WALLt_COLOR])
-
-def draw_helicopter(x, y):
-    arcade.draw_xywh_rectangle_filled(x + 200, y + 380, 100, -70, arcade.color.GRAY)
-    arcade.draw_xywh_rectangle_filled(x + 250, y + 380, 50, -35, arcade.color.WHITE)
-    arcade.draw_xywh_rectangle_filled(x + 200, y + 365, -100, -25, arcade.color.GRAY)
-    arcade.draw_triangle_filled(x + 200, y + 380, x + 235, y + 380, x + 200, y + 400, arcade.color.GRAY)
-    arcade.draw_circle_filled(x + 200, y + 400, 10, arcade.color.BLACK)
-    arcade.draw_xywh_rectangle_filled(x + 205, y + 405, 120, -10, arcade.color.GRAY)
-    arcade.draw_xywh_rectangle_filled(x + 195, y + 405, -120, -10, arcade.color.GRAY)
-    arcade.draw_triangle_filled(x + 100, y + 365, x + 110, y + 365, x + 100, y + 375, arcade.color.GRAY)
-    arcade.draw_circle_filled(x + 100, y + 375, 5, arcade.color.BLACK)
-    arcade.draw_xywh_rectangle_filled(x + 102.5, y + 377.5, 25, -5, arcade.color.GRAY)
-    arcade.draw_xywh_rectangle_filled(x + 97.5, y + 377.5, -25, -5, arcade.color.GRAY)
-    arcade.draw_xywh_rectangle_filled(x + 225, y + 310, 5, -10, arcade.color.GRAY)
-    arcade.draw_xywh_rectangle_filled(x + 275, y + 310, -5, -10, arcade.color.GRAY)
-    arcade.draw_xywh_rectangle_filled(x + 200, y + 300, 100, -5, arcade.color.GRAY)
-
-
-if __name__ == '__main__':
-    setup()
+import arcade                                                                                                  
+import random                                                                                                  
+                                                                                                               
+WIDTH = 1365                                                                                                   
+HEIGHT = 710                                                                                                   
+                                                                                                               
+current_screen = "menu"                                                                                        
+                                                                                                               
+x = 0                                                                                                          
+y = 0                                                                                                          
+                                                                                                               
+                                                                                                               
+#wall                                                                                                          
+                                                                                                               
+WALLb_X = 0                                                                                                    
+WALLb_Y = 1                                                                                                    
+WALLb_WIDTH = 2                                                                                                
+WALLb_HEIGHT = 3                                                                                               
+WALLb_IS_HIT = 4                                                                                               
+WALLb_COLOR = 5                                                                                                
+WALLb_MOVEMENT = 6                                                                                             
+                                                                                                               
+wallb1 = [600, 0, 50, random.randrange(0, HEIGHT-200), False, arcade.color.MAROON, True]                       
+wallb2 = [1200, 0, 50, random.randrange(0, HEIGHT-200), False, arcade.color.MAROON, True]                      
+bottom_walls = [wallb1, wallb2]                                                                                
+                                                                                                               
+WALLt_X = 0                                                                                                    
+WALLt_Y = 1                                                                                                    
+WALLt_WIDTH = 2                                                                                                
+WALLt_HEIGHT = 3                                                                                               
+WALLt_IS_HIT = 4                                                                                               
+WALLt_COLOR = 5                                                                                                
+WALLt_MOVEMENT = 6                                                                                             
+                                                                                                               
+wallt1 = [600, wallb1[WALLb_HEIGHT] + 200, 50, HEIGHT - wallb1[WALLb_HEIGHT], False, arcade.color.MAROON, True]
+wallt2 = [1200, wallb2[WALLb_HEIGHT] + 200, 50, HEIGHT - wallb2[WALLb_HEIGHT], False, arcade.color.MAROON, True
+top_walls = [wallt1, wallt2]                                                                                   
+up_pressed = False                                                                                             
+down_pressed = False                                                                                           
+                                                                                                               
+def update(delta_time):                                                                                        
+    global up_pressed, down_pressed, x, y, current_screen, top_walls, bottom_walls                             
+    if current_screen == "play":                                                                               
+        if up_pressed:                                                                                         
+            y += 7                                                                                             
+        if down_pressed:                                                                                       
+            y -= 8                                                                                             
+        for _ in top_walls:                                                                                    
+            wallt1[WALLt_X] -= 3                                                                               
+            wallt2[WALLt_X] -= 3                                                                               
+        for _ in bottom_walls:                                                                                 
+            wallb1[WALLb_X] -= 3                                                                               
+            wallb2[WALLb_X] -= 3                                                                               
+                                                                                                               
+                                                                                                               
+def on_draw():                                                                                                 
+    global x, y, wall1                                                                                         
+    arcade.start_render()                                                                                      
+    # Draw in here...                                                                                          
+    if current_screen == "menu":                                                                               
+        arcade.draw_text("HOPPY HELICOPTER", HEIGHT/2, WIDTH/2, arcade.color.BLACK)                            
+        arcade.draw_text("Press space to play", HEIGHT/2, WIDTH/2 - 40, arcade.color.BLACK)                    
+    if current_screen == "play":                                                                               
+        draw_helicopter(x, y)                                                                                  
+        for wallb in bottom_walls:                                                                             
+            draw_wallb(wallb)                                                                                  
+        for wallt in top_walls:                                                                                
+            draw_wallt(wallt)                                                                                  
+                                                                                                               
+def on_key_press(key, modifiers):                                                                              
+    global up_pressed, down_pressed, current_screen                                                            
+    if current_screen == "menu":                                                                               
+        if key == arcade.key.SPACE:                                                                            
+            current_screen = "play"                                                                            
+    if current_screen == "play":                                                                               
+        if key == arcade.key.W:                                                                                
+            up_pressed = True                                                                                  
+        if key == arcade.key.S:                                                                                
+            down_pressed = True                                                                                
+        if key == arcade.key.ESCAPE:                                                                           
+            current_screen = "menu"                                                                            
+                                                                                                               
+                                                                                                               
+def on_key_release(key, modifiers):                                                                            
+    global up_pressed                                                                                          
+    if key == arcade.key.W:                                                                                    
+        up_pressed = False                                                                                     
+    global down_pressed                                                                                        
+    if key == arcade.key.S:                                                                                    
+        down_pressed = False                                                                                   
+                                                                                                               
+                                                                                                               
+def on_mouse_press(x, y, button, modifiers):                                                                   
+    pass                                                                                                       
+                                                                                                               
+                                                                                                               
+def setup():                                                                                                   
+    arcade.open_window(WIDTH, HEIGHT, "My Arcade Game")                                                        
+    arcade.set_background_color(arcade.color.LIGHT_BLUE)                                                       
+    arcade.schedule(update, 1 / 60)                                                                            
+                                                                                                               
+    # Override arcade window methods                                                                           
+    window = arcade.get_window()                                                                               
+    window.on_draw = on_draw                                                                                   
+    window.on_key_press = on_key_press                                                                         
+    window.on_key_release = on_key_release                                                                     
+    window.on_mouse_press = on_mouse_press                                                                     
+                                                                                                               
+    arcade.run()                                                                                               
+                                                                                                               
+def draw_wallb(wallb):                                                                                         
+    arcade.draw_xywh_rectangle_filled(wallb[WALLb_X],                                                          
+                                      wallb[WALLb_Y],                                                          
+                                      wallb[WALLb_WIDTH],                                                      
+                                      wallb[WALLb_HEIGHT],                                                     
+                                      wallb[WALLb_COLOR])                                                      
+                                                                                                               
+                                                                                                               
+def draw_wallt(wallt):                                                                                         
+    arcade.draw_xywh_rectangle_filled(wallt[WALLt_X],                                                          
+                                      wallt[WALLt_Y],                                                          
+                                      wallt[WALLt_WIDTH],                                                      
+                                      wallt[WALLt_HEIGHT],                                                     
+                                      wallt[WALLt_COLOR])                                                      
+                                                                                                               
+def draw_helicopter(x, y):                                                                                     
+    arcade.draw_xywh_rectangle_filled(x + 200, y + 380, 100, -70, arcade.color.GRAY)                           
+    arcade.draw_xywh_rectangle_filled(x + 250, y + 380, 50, -35, arcade.color.WHITE)                           
+    arcade.draw_xywh_rectangle_filled(x + 200, y + 365, -100, -25, arcade.color.GRAY)                          
+    arcade.draw_triangle_filled(x + 200, y + 380, x + 235, y + 380, x + 200, y + 400, arcade.color.GRAY)       
+    arcade.draw_circle_filled(x + 200, y + 400, 10, arcade.color.BLACK)                                        
+    arcade.draw_xywh_rectangle_filled(x + 205, y + 405, 120, -10, arcade.color.GRAY)                           
+    arcade.draw_xywh_rectangle_filled(x + 195, y + 405, -120, -10, arcade.color.GRAY)                          
+    arcade.draw_triangle_filled(x + 100, y + 365, x + 110, y + 365, x + 100, y + 375, arcade.color.GRAY)       
+    arcade.draw_circle_filled(x + 100, y + 375, 5, arcade.color.BLACK)                                         
+    arcade.draw_xywh_rectangle_filled(x + 102.5, y + 377.5, 25, -5, arcade.color.GRAY)                         
+    arcade.draw_xywh_rectangle_filled(x + 97.5, y + 377.5, -25, -5, arcade.color.GRAY)                         
+    arcade.draw_xywh_rectangle_filled(x + 225, y + 310, 5, -10, arcade.color.GRAY)                             
+    arcade.draw_xywh_rectangle_filled(x + 275, y + 310, -5, -10, arcade.color.GRAY)                            
+    arcade.draw_xywh_rectangle_filled(x + 200, y + 300, 100, -5, arcade.color.GRAY)                            
+                                                                                                               
+                                                                                                               
+if __name__ == '__main__':                                                                                     
+    setup()                                                                                                    
