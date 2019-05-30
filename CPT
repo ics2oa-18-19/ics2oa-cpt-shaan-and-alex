@@ -9,7 +9,8 @@ current_screen = "menu"
 x = 0
 y = 0
 
-#wall code
+
+#wall
 
 WALLb_X = 0
 WALLb_Y = 1
@@ -42,12 +43,22 @@ up_pressed = False
 down_pressed = False
 
 def update(delta_time):
-    global up_pressed, down_pressed, x, y, current_screen
+    global up_pressed, down_pressed, x, y, current_screen, top_walls, bottom_walls
     if current_screen == "play":
         if up_pressed:
             y += 5
         if down_pressed:
             y -= 5
+        for _ in top_walls:
+            wallt1[WALLt_X] -= 1
+            wallt2[WALLt_X] -= 1
+            wallt3[WALLt_X] -= 1
+            wallt4[WALLt_X] -= 1
+        for _ in bottom_walls:
+            wallb1[WALLb_X] -= 1
+            wallb2[WALLb_X] -= 1
+            wallb3[WALLb_X] -= 1
+            wallb4[WALLb_X] -= 1
 
 
 def on_draw():
@@ -74,6 +85,8 @@ def on_key_press(key, modifiers):
             up_pressed = True
         if key == arcade.key.S:
             down_pressed = True
+        if key == arcade.key.ESCAPE:
+            current_screen = "menu"
 
 
 def on_key_release(key, modifiers):
