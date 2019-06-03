@@ -1,15 +1,13 @@
 import arcade
 import random
-import os
-import time
+
 
 WIDTH = 1365
 HEIGHT = 710
 
 current_screen = "menu"
 
-s = 0
-m = 0 
+score = 0
 x = 0
 y = 0
 
@@ -24,8 +22,8 @@ WALLb_IS_HIT = 4
 WALLb_COLOR = 5
 WALLb_MOVEMENT = 6
 
-wallb1 = [600, 0, 25, random.randrange(0, HEIGHT-200), False, arcade.color.MAROON, True]
-wallb2 = [1200, 0, 25, random.randrange(0, HEIGHT-200), False, arcade.color.MAROON, True]
+wallb1 = [692.5, 0, 25, random.randrange(0, HEIGHT-200), False, arcade.color.MAROON, True]
+wallb2 = [1390, 0, 25, random.randrange(0, HEIGHT-200), False, arcade.color.MAROON, True]
 bottom_walls = [wallb1, wallb2]
 
 WALLt_X = 0
@@ -36,46 +34,41 @@ WALLt_IS_HIT = 4
 WALLt_COLOR = 5
 WALLt_MOVEMENT = 6
 
-wallt1 = [600, wallb1[WALLb_HEIGHT] + 200, 25, HEIGHT - wallb1[WALLb_HEIGHT], False, arcade.color.MAROON, True]
-wallt2 = [1200, wallb2[WALLb_HEIGHT] + 200, 25, HEIGHT - wallb2[WALLb_HEIGHT], False, arcade.color.MAROON, True]
+wallt1 = [692.5, wallb1[WALLb_HEIGHT] + 200, 25, HEIGHT - wallb1[WALLb_HEIGHT], False, arcade.color.MAROON, True]
+wallt2 = [1390, wallb2[WALLb_HEIGHT] + 200, 25, HEIGHT - wallb2[WALLb_HEIGHT], False, arcade.color.MAROON, True]
 top_walls = [wallt1, wallt2]
 up_pressed = False
 down_pressed = False
 
 def update(delta_time):
-    global up_pressed, down_pressed, x, y, current_screen, top_walls, bottom_walls
+    global up_pressed, down_pressed, x, y, current_screen, top_walls, bottom_walls, score
     if current_screen == "play":
         if up_pressed:
             y += 8
-        if down_pressed:                                                                                       
+        if down_pressed:
             y -= 8
         for wallb in bottom_walls:
-            wallb[WALLb_X] -= 5
-            if wallb[WALLb_X] == 0:
-                wallb[WALLb_X] = 1200
+            wallb[WALLb_X] -= 10
+            if wallb[WALLb_X] <= -25:
+                wallb[WALLb_X] = 1390
                 wallb[WALLb_HEIGHT] = random.randrange(0, HEIGHT - 200)
         for wallt in top_walls:
-            wallt[WALLt_X] -= 5
-        if wallt1[WALLt_X] == 0:
-            wallt1[WALLt_X] = 1200
+            wallt[WALLt_X] -= 10
+        if wallt1[WALLt_X] <= -25:
+            wallt1[WALLt_X] = 1390
             wallt1[WALLt_Y] = wallb1[WALLb_HEIGHT] + 200
             wallt1[WALLt_HEIGHT] = HEIGHT - wallb1[WALLb_HEIGHT]
-        if wallt2[WALLt_X] == 0:
-            wallt2[WALLt_X] = 1200
+        if wallt2[WALLt_X] <= -25:
+            wallt2[WALLt_X] = 1390
             wallt2[WALLt_Y] = wallb2[WALLb_HEIGHT] + 200
             wallt2[WALLt_HEIGHT] = HEIGHT - wallb2[WALLb_HEIGHT]
-        while s<=60:
-            os.system('cls')
-            print (m, 'Minutes', s, 'Seconds')
-            time.sleep(1)
-            s+=1
-            if s==60:
-                m+=1
-                s=0
+        score += 1
+
+
 
 
 def on_draw():
-    global x, y, wall1
+    global x, y, wall1, score
     arcade.start_render()
     # Draw in here...
     if current_screen == "menu":
@@ -87,6 +80,7 @@ def on_draw():
             draw_wallb(wallb)
         for wallt in top_walls:
             draw_wallt(wallt)
+        arcade.draw_text("score", 20, 690, arcade.color.BLACK)
 
 def on_key_press(key, modifiers):
     global up_pressed, down_pressed, current_screen
@@ -163,3 +157,4 @@ def draw_helicopter(x, y):
 
 if __name__ == '__main__':
     setup()
+
