@@ -1,3 +1,2 @@
 # HOPPY HELICOPTER
-ics2oa-cpt-shaan-and-alex created by GitHub Classroom
-
+Your job is to avoid the walls and last as long as you can
