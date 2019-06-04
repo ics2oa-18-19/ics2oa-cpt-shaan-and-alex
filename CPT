@@ -76,9 +76,9 @@ def on_draw():
     arcade.start_render()
     # Draw in here...
     if current_screen == "menu":
-        arcade.draw_text("HOPPY HELICOPTER", HEIGHT/2, WIDTH/2, arcade.color.BLACK)
-        arcade.draw_text("Press space to play", HEIGHT/2, WIDTH/2 - 40, arcade.color.BLACK)
-        arcade.draw_text("Press I to read instructions" , HEIGHT/2, WIDTH/2 - 80, arcade.color.BLACK)
+        arcade.draw_text("HOPPY HELICOPTER", HEIGHT/2 - 100, WIDTH/4, arcade.color.BLACK,font_size= 60, font_name= "garamond" )
+        arcade.draw_text("Press space to play", HEIGHT/2 - 100, WIDTH/4.5, arcade.color.BLACK, font_name = "garamond")
+        arcade.draw_text("Press I to read instructions" , HEIGHT/2 - 100, WIDTH/5, arcade.color.BLACK, font_name = "garamond")
     if current_screen == "play":
         draw_helicopter(x, y)
         for wallb in bottom_walls:
@@ -89,6 +89,10 @@ def on_draw():
     if current_screen == "Instruction":
         arcade.draw_text("Welcome to Hoppy Helecopter! To move your helicopter use W for up and S for down.", HEIGHT/2, WIDTH/2 - 40, arcade.color.BLACK)
         arcade.draw_text("You can use the esc key to leave the game at any time", HEIGHT/2, WIDTH/2 - 60, arcade.color.BLACK)
+        arcade.draw_text("Press ESC for main menu", HEIGHT / 10, WIDTH / 2 - 40, arcade.color.BLACK)
+        arcade.draw_text("KEYBOARD DIAGRAM:", HEIGHT / 10, WIDTH / 2 - 120, arcade.color.BLACK)
+
+
 
 def on_key_press(key, modifiers):
     global up_pressed, down_pressed, current_screen
@@ -97,6 +101,8 @@ def on_key_press(key, modifiers):
             current_screen = "play"
         if key == arcade.key.I:
             current_screen = "Instruction"
+            if key == arcade.key.ESCAPE:
+                current_screen = "menu"
     if current_screen == "play":
         if key == arcade.key.W:
             up_pressed = True
@@ -167,6 +173,4 @@ def draw_helicopter(x, y):
 
 if __name__ == '__main__':
     setup()
-
-
 
