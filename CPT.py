@@ -18,24 +18,22 @@ WALLb_X = 0
 WALLb_Y = 1
 WALLb_WIDTH = 2
 WALLb_HEIGHT = 3
-WALLb_IS_HIT = 4
-WALLb_COLOR = 5
-WALLb_MOVEMENT = 6
+WALLb_COLOR = 4
 
-wallb1 = [692.5, 0, 25, random.randrange(0, HEIGHT-200), False, arcade.color.MAROON, True]
-wallb2 = [1390, 0, 25, random.randrange(0, HEIGHT-200), False, arcade.color.MAROON, True]
+
+wallb1 = [692.5, 0, 25, random.randrange(0, HEIGHT-200), arcade.color.MAROON]
+wallb2 = [1390, 0, 25, random.randrange(0, HEIGHT-200), arcade.color.MAROON]
 bottom_walls = [wallb1, wallb2]
 
 WALLt_X = 0
 WALLt_Y = 1
 WALLt_WIDTH = 2
 WALLt_HEIGHT = 3
-WALLt_IS_HIT = 4
-WALLt_COLOR = 5
-WALLt_MOVEMENT = 6
+WALLt_COLOR = 4
 
-wallt1 = [692.5, wallb1[WALLb_HEIGHT] + 200, 25, HEIGHT - wallb1[WALLb_HEIGHT], False, arcade.color.MAROON, True]
-wallt2 = [1390, wallb2[WALLb_HEIGHT] + 200, 25, HEIGHT - wallb2[WALLb_HEIGHT], False, arcade.color.MAROON, True]
+
+wallt1 = [692.5, wallb1[WALLb_HEIGHT] + 200, 25, HEIGHT - wallb1[WALLb_HEIGHT], arcade.color.MAROON]
+wallt2 = [1390, wallb2[WALLb_HEIGHT] + 200, 25, HEIGHT - wallb2[WALLb_HEIGHT], arcade.color.MAROON]
 top_walls = [wallt1, wallt2]
 up_pressed = False
 down_pressed = False
@@ -70,22 +68,19 @@ def update(delta_time):
                 wallb[WALLb_HEIGHT] = random.randrange(0, HEIGHT - 200)
         for wallt in top_walls:
             wallt[WALLt_X] -= 10
-        if wallt1[WALLt_X] <= -25:
-            wallt1[WALLt_X] = 1390
-            wallt1[WALLt_Y] = wallb1[WALLb_HEIGHT] + 200
-            wallt1[WALLt_HEIGHT] = HEIGHT - wallb1[WALLb_HEIGHT]
-        if wallt2[WALLt_X] <= -25:
-            wallt2[WALLt_X] = 1390
-            wallt2[WALLt_Y] = wallb2[WALLb_HEIGHT] + 200
-            wallt2[WALLt_HEIGHT] = HEIGHT - wallb2[WALLb_HEIGHT]
-        if y >= 410:
-            y = -410
-        if helihitbox1[HHB_Y] >= 410:
-            helihitbox1[HHB_Y] = -410
-        if helihitbox2[HHB_Y] >= 410:
-            helihitbox2[HHB_Y] = -410
+            if wallt1[WALLt_X] <= -25:
+                wallt1[WALLt_X] = 1390
+                wallt1[WALLt_Y] = wallb1[WALLb_HEIGHT] + 200
+                wallt1[WALLt_HEIGHT] = HEIGHT - wallb1[WALLb_HEIGHT]
+            if wallt2[WALLt_X] <= -25:
+                wallt2[WALLt_X] = 1390
+                wallt2[WALLt_Y] = wallb2[WALLb_HEIGHT] + 200
+                wallt2[WALLt_HEIGHT] = HEIGHT - wallb2[WALLb_HEIGHT]
+            if bwall1_is_hit1(wallb1, helihitbox1) == True:
+                current_screen = "menu"
+            if bwall2_is_hit1(wallb2, helihitbox1) == True:
+                current_screen = "menu"
 
-        score += 1
 
 
 
@@ -199,5 +194,25 @@ def draw_helihitbox(helihitbox):
                                       helihitbox[HHB_HEIGHT],
                                       helihitbox[HHB_COLOR])
 
+def bwall1_is_hit1(wallb1, helihitbox1):
+    if (helihitbox1[HHB_X] and helihitbox1[HHB_X] + helihitbox1[HHB_WIDTH] > wallb1[WALLb_X] and helihitbox1[HHB_X] and helihitbox1[HHB_X] +
+            helihitbox1[HHB_WIDTH] < wallb1[WALLb_X] + wallb1[WALLb_WIDTH] and
+            helihitbox1[HHB_Y] and helihitbox1[HHB_Y] + helihitbox1[HHB_HEIGHT] > wallb1[WALLb_Y] and helihitbox1[HHB_Y] and helihitbox1[HHB_Y] + helihitbox1[HHB_HEIGHT]
+            < wallb1[WALLb_Y] + wallb1[WALLb_HEIGHT]):
+        return True
+    else:
+        return False
+def bwall2_is_hit1(wallb2, helihitbox1):
+    if (helihitbox1[HHB_X] and helihitbox1[HHB_X] + helihitbox1[HHB_WIDTH] > wallb2[WALLb_X] and helihitbox1[HHB_X] and helihitbox1[HHB_X] +
+            helihitbox1[HHB_WIDTH] < wallb2[WALLb_X] + wallb2[WALLb_WIDTH] and
+            helihitbox1[HHB_Y] and helihitbox1[HHB_Y] + helihitbox1[HHB_HEIGHT] > wallb2[WALLb_Y] and helihitbox1[HHB_Y] and helihitbox1[HHB_Y] + helihitbox1[HHB_HEIGHT]
+            < wallb2[WALLb_Y] + wallb2[WALLb_HEIGHT]):
+        return True
+    else:
+        return False
+
+
+
 if __name__ == '__main__':
     setup()
+
