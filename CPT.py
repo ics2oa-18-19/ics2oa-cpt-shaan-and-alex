@@ -112,7 +112,18 @@ def on_draw():
         arcade.draw_text("You can use the esc key to leave the game at any time", HEIGHT/2, WIDTH/2 - 60, arcade.color.BLACK)
         arcade.draw_text("Press ESC for main menu", HEIGHT / 10, WIDTH / 2 - 40, arcade.color.BLACK)
         arcade.draw_text("KEYBOARD DIAGRAM:", HEIGHT / 10, WIDTH / 2 - 120, arcade.color.BLACK)
-
+        arcade.draw_xywh_rectangle_outline(450, 480, 100, 100, arcade.color.BLACK)
+        arcade.draw_xywh_rectangle_outline(450, 360, 100, 100, arcade.color.BLACK)
+        arcade.draw_xywh_rectangle_outline(300, 480, 100, 100, arcade.color.BLACK)
+        arcade.draw_xywh_rectangle_outline(600, 360, 400, 100, arcade.color.BLACK)
+        arcade.draw_text("SPACE", HEIGHT + 50, WIDTH / 2 - 280, arcade.color.BLACK)
+        arcade.draw_text("S", HEIGHT - 220, WIDTH / 2 - 280, arcade.color.BLACK)
+        arcade.draw_text("W", HEIGHT - 220, WIDTH / 2 - 160, arcade.color.BLACK)
+        arcade.draw_text("ESC", HEIGHT / 2.14, WIDTH / 2 - 160, arcade.color.BLACK)
+        arcade.draw_text("ESC = Escape To Menu", HEIGHT / 10, WIDTH / 3, arcade.color.BLACK)
+        arcade.draw_text("W = Up:", HEIGHT / 10, WIDTH / 3 - 30, arcade.color.BLACK)
+        arcade.draw_text("S = DOWN:", HEIGHT / 10, WIDTH / 3 - 60, arcade.color.BLACK)
+        arcade.draw_text("SPACE = START:", HEIGHT / 10, WIDTH / 3 - 90, arcade.color.BLACK)
 
 
 def on_key_press(key, modifiers):
@@ -122,8 +133,9 @@ def on_key_press(key, modifiers):
             current_screen = "play"
         if key == arcade.key.I:
             current_screen = "Instruction"
-            if key == arcade.key.ESCAPE:
-                current_screen = "menu"
+    if current_screen == "Instruction":
+        if key == arcade.key.ESCAPE:
+            current_screen = "menu"
     if current_screen == "play":
         if key == arcade.key.W:
             up_pressed = True
@@ -235,4 +247,3 @@ def bwall2_is_hit2(wallb2, helihitbox2):
 
 if __name__ == '__main__':
     setup()
-
