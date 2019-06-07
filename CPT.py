@@ -7,10 +7,9 @@ HEIGHT = 710
 
 current_screen = "menu"
 
-score = 0
 x = 0
 y = 0
-
+score = 0
 
 #wall
 
@@ -42,11 +41,10 @@ HHB_X = 0
 HHB_Y = 1
 HHB_WIDTH = 2
 HHB_HEIGHT = 3
-HHB_HIT = 4
-HHB_COLOR = 5
+HHB_COLOR = 4
 
-helihitbox1 = [x + 200, y + 380, 100, -70, False,  arcade.color.BLACK]
-helihitbox2 = [x + 200, y + 365, -100, -25, False, arcade.color.BLACK]
+helihitbox1 = [x + 200, y + 380, 100, -70, arcade.color.BLACK]
+helihitbox2 = [x + 200, y + 365, -100, -25, arcade.color.BLACK]
 all_hhb = [helihitbox1, helihitbox2]
 
 
@@ -87,14 +85,16 @@ def update(delta_time):
         if bwall2_is_hit2(wallb2, helihitbox2) == True:
             current_screen = "score"
         if twall1_is_hit1(wallt1, helihitbox1) == True:
-            current_screen = score
+            current_screen = "score"
         if twall2_is_hit1(wallt2, helihitbox1) == True:
             current_screen = "score"
         if twall1_is_hit2(wallt1, helihitbox2) == True:
             current_screen = "score"
         if twall2_is_hit2(wallt2, helihitbox2) == True:
             current_screen = "score"
-    if current_screen == "score":
+        if score_system(wallb, wallt) == True:
+            score += 1
+    if current_screen == "reset":
         x = 0
         y = 0
         wallb1[WALLb_X] = 692.5
@@ -106,6 +106,17 @@ def update(delta_time):
         helihitbox2[HHB_X] = x + 200
         helihitbox2[HHB_Y] = y + 365
         score = 0
+        current_screen = "play"
+
+
+def score_system(wallb, wallt):
+    if (helihitbox1[HHB_X] > wallb[WALLb_X] - 12.5 and helihitbox1[HHB_X] < wallb[WALLb_X] - 3.5 or helihitbox1[HHB_X]
+            == wallb[WALLb_X] and helihitbox1[HHB_Y] > wallb[WALLb_Y] + wallb[WALLb_HEIGHT]
+           and helihitbox1[HHB_Y] < wallt[WALLt_Y]):
+        return True
+    else:
+        return False
+
 
 
 def on_draw():
@@ -142,7 +153,8 @@ def on_draw():
         arcade.draw_text("W = Up:", HEIGHT / 10, WIDTH / 3 - 30, arcade.color.BLACK)
         arcade.draw_text("S = DOWN:", HEIGHT / 10, WIDTH / 3 - 60, arcade.color.BLACK)
         arcade.draw_text("SPACE = START:", HEIGHT / 10, WIDTH / 3 - 90, arcade.color.BLACK)
-
+    if current_screen == "score":
+        print(score)
 
 def on_key_press(key, modifiers):
     global up_pressed, down_pressed, current_screen
@@ -163,7 +175,7 @@ def on_key_press(key, modifiers):
             current_screen = "menu"
     if current_screen == "score":
         if key == arcade.key.SPACE:
-            current_screen = "play"
+            current_screen = "reset"
         if key == arcade.key.ESCAPE:
             current_screen = "menu"
 
