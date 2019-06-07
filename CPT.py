@@ -80,6 +80,10 @@ def update(delta_time):
                 current_screen = "menu"
             if bwall2_is_hit1(wallb2, helihitbox1) == True:
                 current_screen = "menu"
+            if bwall1_is_hit2(wallb1, helihitbox2) == True:
+                current_screen = "menu"
+            if bwall2_is_hit2(wallb2, helihitbox2) == True:
+                current_screen = "menu"
 
 
 
@@ -188,7 +192,7 @@ def draw_helicopter(x, y):
     arcade.draw_xywh_rectangle_filled(x + 200, y + 300, 100, -5, arcade.color.GRAY)
 
 def draw_helihitbox(helihitbox):
-    arcade.draw_xywh_rectangle_filled(helihitbox[HHB_X],
+    arcade.draw_xywh_rectangle_outline(helihitbox[HHB_X],
                                       helihitbox[HHB_Y],
                                       helihitbox[HHB_WIDTH],
                                       helihitbox[HHB_HEIGHT],
@@ -206,6 +210,22 @@ def bwall2_is_hit1(wallb2, helihitbox1):
     if (helihitbox1[HHB_X] and helihitbox1[HHB_X] + helihitbox1[HHB_WIDTH] > wallb2[WALLb_X] and helihitbox1[HHB_X] and helihitbox1[HHB_X] +
             helihitbox1[HHB_WIDTH] < wallb2[WALLb_X] + wallb2[WALLb_WIDTH] and
             helihitbox1[HHB_Y] and helihitbox1[HHB_Y] + helihitbox1[HHB_HEIGHT] > wallb2[WALLb_Y] and helihitbox1[HHB_Y] and helihitbox1[HHB_Y] + helihitbox1[HHB_HEIGHT]
+            < wallb2[WALLb_Y] + wallb2[WALLb_HEIGHT]):
+        return True
+    else:
+        return False
+def bwall1_is_hit2(wallb1, helihitbox2):
+    if (helihitbox2[HHB_X] and helihitbox2[HHB_X] + helihitbox2[HHB_WIDTH] > wallb1[WALLb_X] and helihitbox2[HHB_X] and helihitbox2[HHB_X] +
+            helihitbox2[HHB_WIDTH] < wallb1[WALLb_X] + wallb1[WALLb_WIDTH] and
+            helihitbox2[HHB_Y] and helihitbox2[HHB_Y] + helihitbox2[HHB_HEIGHT] > wallb1[WALLb_Y] and helihitbox2[HHB_Y] and helihitbox2[HHB_Y] + helihitbox2[HHB_HEIGHT]
+            < wallb1[WALLb_Y] + wallb1[WALLb_HEIGHT]):
+        return True
+    else:
+        return False
+def bwall2_is_hit2(wallb2, helihitbox2):
+    if (helihitbox2[HHB_X] and helihitbox2[HHB_X] + helihitbox2[HHB_WIDTH] > wallb2[WALLb_X] and helihitbox2[HHB_X] and helihitbox2[HHB_X] +
+            helihitbox2[HHB_WIDTH] < wallb2[WALLb_X] + wallb2[WALLb_WIDTH] and
+            helihitbox2[HHB_Y] and helihitbox2[HHB_Y] + helihitbox2[HHB_HEIGHT] > wallb2[WALLb_Y] and helihitbox2[HHB_Y] and helihitbox2[HHB_Y] + helihitbox2[HHB_HEIGHT]
             < wallb2[WALLb_Y] + wallb2[WALLb_HEIGHT]):
         return True
     else:
