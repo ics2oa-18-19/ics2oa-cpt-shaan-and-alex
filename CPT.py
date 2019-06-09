@@ -43,24 +43,25 @@ HHB_WIDTH = 2
 HHB_HEIGHT = 3
 HHB_COLOR = 4
 
-helihitbox1 = [x + 200, y + 380, 100, -70, arcade.color.BLACK]
-helihitbox2 = [x + 200, y + 365, -100, -25, arcade.color.BLACK]
-all_hhb = [helihitbox1, helihitbox2]
+helihitbox1 = [x + 200, y + 295, 100, 5, arcade.color.BLACK]
+helihitbox2 = [x + 200, y + 340, -100, 25, arcade.color.BLACK]
+helihitbox3 = [x + 75, y + 395, 250, 10, arcade.color.BLACK]
+all_hhb = [helihitbox1, helihitbox2, helihitbox3]
 
 
 def update(delta_time):
-    global up_pressed, down_pressed, x, y, current_screen, top_walls, bottom_walls, score
+    global up_pressed, down_pressed, x, y, current_screen, top_walls, bottom_walls, score, all_hhb
     if current_screen == "play":
-        if y <= 299.5:
+        if y <= 290:
             if up_pressed:
                 y += 10
-                helihitbox1[HHB_Y] += 10
-                helihitbox2[HHB_Y] += 10
-        if y >= -290:
+                for helihitbox in all_hhb:
+                    helihitbox[HHB_Y] += 10
+        if y >= -280:
             if down_pressed:
                 y -= 10
-                helihitbox1[HHB_Y] -= 10
-                helihitbox2[HHB_Y] -= 10
+                for helihitbox in all_hhb:
+                    helihitbox[HHB_Y] -= 10
         for wallb in bottom_walls:
             wallb[WALLb_X] -= 10
             if wallb[WALLb_X] <= -25:
@@ -76,24 +77,10 @@ def update(delta_time):
                 wallt2[WALLt_X] = 1390
                 wallt2[WALLt_Y] = wallb2[WALLb_HEIGHT] + 200
                 wallt2[WALLt_HEIGHT] = HEIGHT - wallb2[WALLb_HEIGHT]
-        if bwall1_is_hit1(wallb1, helihitbox1) == True:
-            current_screen = "score"
-        if bwall2_is_hit1(wallb2, helihitbox1) == True:
-            current_screen = "score"
-        if bwall1_is_hit2(wallb1, helihitbox2) == True:
-            current_screen = "score"
-        if bwall2_is_hit2(wallb2, helihitbox2) == True:
-            current_screen = "score"
-        if twall1_is_hit1(wallt1, helihitbox1) == True:
-            current_screen = "score"
-        if twall2_is_hit1(wallt2, helihitbox1) == True:
-            current_screen = "score"
-        if twall1_is_hit2(wallt1, helihitbox2) == True:
-            current_screen = "score"
-        if twall2_is_hit2(wallt2, helihitbox2) == True:
-            current_screen = "score"
         if score_system(wallb, wallt) == True:
             score += 1
+        if hit_detectionb(wallb) == True:
+            current_screen = "score"
     if current_screen == "reset":
         x = 0
         y = 0
@@ -102,9 +89,11 @@ def update(delta_time):
         wallt1[WALLt_X] = 692.5
         wallt2[WALLt_X] = 1390
         helihitbox1[HHB_X] = x + 200
-        helihitbox1[HHB_Y] = y + 380
+        helihitbox1[HHB_Y] = y + 295
         helihitbox2[HHB_X] = x + 200
-        helihitbox2[HHB_Y] = y + 365
+        helihitbox2[HHB_Y] = y + 340
+        helihitbox3[HHB_X] = x + 75
+        helihitbox3[HHB_Y] = y + 395
         score = 0
         current_screen = "play"
 
@@ -246,87 +235,26 @@ def draw_helicopter(x, y):
 # HELICOPTER HITBOX
 
 def draw_helihitbox(helihitbox):
-    arcade.draw_xywh_rectangle_outline(helihitbox[HHB_X],
-                                      helihitbox[HHB_Y],
-                                      helihitbox[HHB_WIDTH],
-                                      helihitbox[HHB_HEIGHT],
-                                      helihitbox[HHB_COLOR])
+    for helihitbox in all_hhb:
+        arcade.draw_xywh_rectangle_outline(helihitbox[HHB_X],
+                                           helihitbox[HHB_Y],
+                                           helihitbox[HHB_WIDTH],
+                                           helihitbox[HHB_HEIGHT],
+                                           helihitbox[HHB_COLOR])
 
 # BOTTOM WALL HIT DETECTION
 
-def bwall1_is_hit1(wallb1, helihitbox1):
-    if (helihitbox1[HHB_X] and helihitbox1[HHB_X] + helihitbox1[HHB_WIDTH] > wallb1[WALLb_X] and helihitbox1[HHB_X] and helihitbox1[HHB_X] +
-            helihitbox1[HHB_WIDTH] < wallb1[WALLb_X] + wallb1[WALLb_WIDTH] and
-            helihitbox1[HHB_Y] and helihitbox1[HHB_Y] + helihitbox1[HHB_HEIGHT] > wallb1[WALLb_Y] and helihitbox1[HHB_Y] and helihitbox1[HHB_Y] + helihitbox1[HHB_HEIGHT]
-            < wallb1[WALLb_Y] + wallb1[WALLb_HEIGHT]):
-        return True
-    else:
-        return False
+def hit_detectionb(wallb):
+    for wallb in bottom_walls:
+        if (helihitbox1[HHB_X] + helihitbox1[HHB_WIDTH] >= wallb[WALLb_X] and
+        helihitbox1[HHB_X] + helihitbox1[HHB_WIDTH] <= wallb[WALLb_X] + wallb[WALLb_WIDTH]
+        and helihitbox1[HHB_Y] > wallb[WALLb_Y] and helihitbox1[HHB_Y] < wallb[WALLb_HEIGHT]):
+            return True
+        else:
+            return False
 
-def bwall2_is_hit1(wallb2, helihitbox1):
-    if (helihitbox1[HHB_X] and helihitbox1[HHB_X] + helihitbox1[HHB_WIDTH] > wallb2[WALLb_X] and helihitbox1[HHB_X] and helihitbox1[HHB_X] +
-            helihitbox1[HHB_WIDTH] < wallb2[WALLb_X] + wallb2[WALLb_WIDTH] and
-            helihitbox1[HHB_Y] and helihitbox1[HHB_Y] + helihitbox1[HHB_HEIGHT] > wallb2[WALLb_Y] and helihitbox1[HHB_Y] and helihitbox1[HHB_Y] + helihitbox1[HHB_HEIGHT]
-            < wallb2[WALLb_Y] + wallb2[WALLb_HEIGHT]):
-        return True
-    else:
-        return False
 
-def bwall1_is_hit2(wallb1, helihitbox2):
-    if (helihitbox2[HHB_X] and helihitbox2[HHB_X] + helihitbox2[HHB_WIDTH] > wallb1[WALLb_X] and helihitbox2[HHB_X] and helihitbox2[HHB_X] +
-            helihitbox2[HHB_WIDTH] < wallb1[WALLb_X] + wallb1[WALLb_WIDTH] and
-            helihitbox2[HHB_Y] and helihitbox2[HHB_Y] + helihitbox2[HHB_HEIGHT] > wallb1[WALLb_Y] and helihitbox2[HHB_Y] and helihitbox2[HHB_Y] + helihitbox2[HHB_HEIGHT]
-            < wallb1[WALLb_Y] + wallb1[WALLb_HEIGHT]):
-        return True
-    else:
-        return False
 
-def bwall2_is_hit2(wallb2, helihitbox2):
-    if (helihitbox2[HHB_X] and helihitbox2[HHB_X] + helihitbox2[HHB_WIDTH] > wallb2[WALLb_X] and helihitbox2[HHB_X] and helihitbox2[HHB_X] +
-            helihitbox2[HHB_WIDTH] < wallb2[WALLb_X] + wallb2[WALLb_WIDTH] and
-            helihitbox2[HHB_Y] and helihitbox2[HHB_Y] + helihitbox2[HHB_HEIGHT] > wallb2[WALLb_Y] and helihitbox2[HHB_Y] and helihitbox2[HHB_Y] + helihitbox2[HHB_HEIGHT]
-            < wallb2[WALLb_Y] + wallb2[WALLb_HEIGHT]):
-        return True
-    else:
-        return False
-
-# TOP WALLS HIT DETECTION
-
-def twall1_is_hit1(wallt1, helihitbox1):
-    if (helihitbox1[HHB_X] and helihitbox1[HHB_X] + helihitbox1[HHB_WIDTH] > wallt1[WALLt_X] and helihitbox1[HHB_X] and helihitbox1[HHB_X] +
-            helihitbox1[HHB_WIDTH] < wallt1[WALLt_X] + wallt1[WALLt_WIDTH] and
-            helihitbox1[HHB_Y] and helihitbox1[HHB_Y] + helihitbox1[HHB_HEIGHT] > wallt1[WALLt_Y] and helihitbox1[HHB_Y] and helihitbox1[HHB_Y] + helihitbox1[HHB_HEIGHT]
-            < wallt1[WALLt_Y] + wallt1[WALLt_HEIGHT]):
-        return True
-    else:
-        return False
-
-def twall2_is_hit1(wallt2, helihitbox1):
-    if (helihitbox1[HHB_X] and helihitbox1[HHB_X] + helihitbox1[HHB_WIDTH] > wallt2[WALLt_X] and helihitbox1[HHB_X] and helihitbox1[HHB_X] +
-            helihitbox1[HHB_WIDTH] < wallt2[WALLt_X] + wallt2[WALLt_WIDTH] and
-            helihitbox1[HHB_Y] and helihitbox1[HHB_Y] + helihitbox1[HHB_HEIGHT] > wallt2[WALLt_Y] and helihitbox1[HHB_Y] and helihitbox1[HHB_Y] + helihitbox1[HHB_HEIGHT]
-            < wallt2[WALLt_Y] + wallt2[WALLt_HEIGHT]):
-        return True
-    else:
-        return False
-
-def twall1_is_hit2(wallt1, helihitbox2):
-    if (helihitbox2[HHB_X] and helihitbox2[HHB_X] + helihitbox2[HHB_WIDTH] > wallt1[WALLt_X] and helihitbox2[HHB_X] and helihitbox2[HHB_X] +
-            helihitbox2[HHB_WIDTH] < wallt1[WALLt_X] + wallt1[WALLt_WIDTH] and
-            helihitbox2[HHB_Y] and helihitbox2[HHB_Y] + helihitbox2[HHB_HEIGHT] > wallt1[WALLt_Y] and helihitbox2[HHB_Y] and helihitbox2[HHB_Y] + helihitbox2[HHB_HEIGHT]
-            < wallt1[WALLt_Y] + wallt1[WALLt_HEIGHT]):
-        return True
-    else:
-        return False
-
-def twall2_is_hit2(wallt2, helihitbox2):
-    if (helihitbox2[HHB_X] and helihitbox2[HHB_X] + helihitbox2[HHB_WIDTH] > wallt2[WALLt_X] and helihitbox2[HHB_X] and helihitbox2[HHB_X] +
-            helihitbox2[HHB_WIDTH] < wallt2[WALLt_X] + wallt2[WALLt_WIDTH] and
-            helihitbox2[HHB_Y] and helihitbox2[HHB_Y] + helihitbox2[HHB_HEIGHT] > wallt2[WALLt_Y] and helihitbox2[HHB_Y] and helihitbox2[HHB_Y] + helihitbox2[HHB_HEIGHT]
-            < wallt2[WALLt_Y] + wallt2[WALLt_HEIGHT]):
-        return True
-    else:
-        return False
 
 
 
