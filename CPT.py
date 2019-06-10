@@ -115,7 +115,7 @@ def on_draw():
     if current_screen == "menu":
         arcade.draw_text("HOPPY HELICOPTER", HEIGHT/2 - 100, WIDTH/4, arcade.color.BLACK,font_size= 60, font_name= "garamond" )
         arcade.draw_text("Press space to play", HEIGHT/2 - 100, WIDTH/4.5, arcade.color.BLACK, font_name = "garamond")
-        arcade.draw_text("Press I to read instructions" , HEIGHT/2 - 100, WIDTH/5, arcade.color.BLACK, font_name = "garamond")
+        arcade.draw_text("Press I to read instructions" , HEIGHT/2 - 100, WIDTH/5, arcade.color.BLACK, font_name = "garamond")  
     if current_screen == "play":
         draw_helicopter(x, y)
         draw_helihitbox(helihitbox1)
@@ -124,7 +124,7 @@ def on_draw():
             draw_wallb(wallb)
         for wallt in top_walls:
             draw_wallt(wallt)
-        arcade.draw_text("score", 20, 690, arcade.color.BLACK)
+        arcade.draw_text(f"{score}", 20, 690, arcade.color.BLACK)
     if current_screen == "Instruction":
         arcade.draw_text("Welcome to Hoppy Helecopter! To move your helicopter use W for up and S for down.", HEIGHT/2, WIDTH/2 - 40, arcade.color.BLACK)
         arcade.draw_text("You can use the esc key to leave the game at any time", HEIGHT/2, WIDTH/2 - 60, arcade.color.BLACK)
@@ -143,13 +143,15 @@ def on_draw():
         arcade.draw_text("S = DOWN:", HEIGHT / 10, WIDTH / 3 - 60, arcade.color.BLACK)
         arcade.draw_text("SPACE = START:", HEIGHT / 10, WIDTH / 3 - 90, arcade.color.BLACK)
     if current_screen == "score":
-        print(score)
+        arcade.draw_text(f"Score: {score}", HEIGHT / 10, WIDTH / 2 - 20, arcade.color.BLACK)
+        arcade.draw_text("To return to menu, press ESC", HEIGHT / 10, WIDTH / 2 - 60, arcade.color.BLACK)
+        arcade.draw_text("To replay, press SPACE", HEIGHT / 10, WIDTH / 2 - 100, arcade.color.BLACK)
 
 def on_key_press(key, modifiers):
     global up_pressed, down_pressed, current_screen
     if current_screen == "menu":
         if key == arcade.key.SPACE:
-            current_screen = "play"
+            current_screen = "reset"
         if key == arcade.key.I:
             current_screen = "Instruction"
     if current_screen == "Instruction":
