@@ -1,16 +1,18 @@
 import arcade
 import random
 
+#Screen Dimensions
 WIDTH = 1365
 HEIGHT = 710
 
+#Variables
 current_screen = "menu"
-
 x = 0
 y = 0
 score = 0
 
-# wall
+
+    #Bottom Wall Code
 
 WALLb_X = 0
 WALLb_Y = 1
@@ -21,6 +23,9 @@ WALLb_COLOR = 4
 wallb1 = [690, 0, 25, random.randrange(0, HEIGHT - 200), arcade.color.MAROON]
 wallb2 = [1390, 0, 25, random.randrange(0, HEIGHT - 200), arcade.color.MAROON]
 bottom_walls = [wallb1, wallb2]
+
+
+    #Top Wall Code
 
 WALLt_X = 0
 WALLt_Y = 1
@@ -34,17 +39,20 @@ top_walls = [wallt1, wallt2]
 up_pressed = False
 down_pressed = False
 
+
+    #Helicopter Hit Box Code
+
 HHB_X = 0
 HHB_Y = 1
 HHB_WIDTH = 2
 HHB_HEIGHT = 3
-HHB_COLOR = 4
 
-helihitbox1 = [x + 200, y + 295, 100, 5, arcade.color.BLACK]
-helihitbox2 = [x + 100, y + 340, 100, 25, arcade.color.BLACK]
-helihitbox3 = [x + 75, y + 395, 250, 10, arcade.color.BLACK]
+helihitbox1 = [x + 200, y + 295, 100, 5]
+helihitbox2 = [x + 100, y + 340, 100, 25]
+helihitbox3 = [x + 75, y + 395, 250, 10]
 all_hhb = [helihitbox1, helihitbox2, helihitbox3]
 
+    #Update Function
 
 def update(delta_time):
     global up_pressed, down_pressed, x, y, current_screen, top_walls, bottom_walls, score, all_hhb
@@ -74,7 +82,7 @@ def update(delta_time):
                 wallt2[WALLt_X] = 1390
                 wallt2[WALLt_Y] = wallb2[WALLb_HEIGHT] + 200
                 wallt2[WALLt_HEIGHT] = HEIGHT - wallb2[WALLb_HEIGHT]
-        if score_system(wallb, wallt) == True:
+        if score_system() == True:
             score += 1
         if hit_detection() == True:
             current_screen = "score"
@@ -95,15 +103,6 @@ def update(delta_time):
         current_screen = "play"
 
 
-def score_system(wallb, wallt):
-    for wallb in bottom_walls:
-        for wallt in top_walls:
-            if (helihitbox1[HHB_X] == wallb[WALLb_X] and helihitbox1[HHB_Y] > wallb[WALLb_Y]
-                    + wallb[WALLb_HEIGHT] and helihitbox1[HHB_Y] < wallt[WALLt_Y]):
-                return True
-    else:
-        return False
-
 
 def on_draw():
     global x, y, wall1, score, helihitbox1
@@ -116,15 +115,26 @@ def on_draw():
                          font_name="garamond")
         arcade.draw_text("Press I to read instructions", HEIGHT / 2 - 100, WIDTH / 5, arcade.color.BLACK,
                          font_name="garamond")
+        arcade.draw_text("Press ESC to Quit", HEIGHT / 2 - 100, WIDTH / 5.5 , arcade.color.BLACK,
+                         font_name="garamond")
     if current_screen == "play":
         draw_helicopter(x, y)
-        draw_helihitbox(helihitbox1)
-        draw_helihitbox(helihitbox2)
         for wallb in bottom_walls:
             draw_wallb(wallb)
         for wallt in top_walls:
             draw_wallt(wallt)
         arcade.draw_text(f"{score}", 20, 690, arcade.color.BLACK)
+    if current_screen == "pause":
+        draw_helicopter(x, y)
+        for wallb in bottom_walls:
+            draw_wallb(wallb)
+        for wallt in top_walls:
+            draw_wallt(wallt)
+        arcade.draw_text(f"{score}", 20, 690, arcade.color.BLACK)
+        arcade.draw_text("PAUSE", HEIGHT / 2 + 150, WIDTH / 4, arcade.color.BLACK, font_size=60,
+                         font_name="garamond")
+        arcade.draw_text("Press Space to Resume", HEIGHT / 2 + 80, WIDTH / 4 - 50, arcade.color.BLACK, font_size=30,
+                         font_name="garamond")
     if current_screen == "Instruction":
         arcade.draw_text("Welcome to Hoppy Helecopter! To move your helicopter use W for up and S for down.",
                          HEIGHT / 2, WIDTH / 2 - 40, arcade.color.BLACK)
@@ -150,6 +160,18 @@ def on_draw():
         arcade.draw_text("To replay, press SPACE", HEIGHT / 10, WIDTH / 2 - 100, arcade.color.BLACK)
 
 
+    #Score Code
+
+def score_system():
+    for wallb in bottom_walls:
+        for wallt in top_walls:
+            if (helihitbox1[HHB_X] == wallb[WALLb_X] and helihitbox1[HHB_Y] > wallb[WALLb_Y]
+                    + wallb[WALLb_HEIGHT] and helihitbox1[HHB_Y] < wallt[WALLt_Y]):
+                return True
+    else:
+        return False
+
+
 def on_key_press(key, modifiers):
     global up_pressed, down_pressed, current_screen
     if current_screen == "menu":
@@ -157,6 +179,8 @@ def on_key_press(key, modifiers):
             current_screen = "reset"
         if key == arcade.key.I:
             current_screen = "Instruction"
+        if key == arcade.key.ESCAPE:
+            quit()
     if current_screen == "Instruction":
         if key == arcade.key.ESCAPE:
             current_screen = "menu"
@@ -166,12 +190,16 @@ def on_key_press(key, modifiers):
         if key == arcade.key.S:
             down_pressed = True
         if key == arcade.key.ESCAPE:
-            current_screen = "menu"
+            current_screen = "pause"
+    if current_screen == "pause":
+        if key == arcade.key.SPACE:
+            current_screen = "play"
     if current_screen == "score":
         if key == arcade.key.SPACE:
             current_screen = "reset"
         if key == arcade.key.ESCAPE:
             current_screen = "menu"
+
 
 
 def on_key_release(key, modifiers):
@@ -183,8 +211,10 @@ def on_key_release(key, modifiers):
         down_pressed = False
 
 
+
 def on_mouse_press(x, y, button, modifiers):
     pass
+
 
 
 def setup():
@@ -200,6 +230,7 @@ def setup():
     window.on_mouse_press = on_mouse_press
 
     arcade.run()
+
 
 
 # BOTTOM WALL CODE
@@ -222,6 +253,7 @@ def draw_wallt(wallt):
                                       wallt[WALLt_COLOR])
 
 
+
 # HELICOPTER SHAPES
 
 def draw_helicopter(x, y):
@@ -241,18 +273,7 @@ def draw_helicopter(x, y):
     arcade.draw_xywh_rectangle_filled(x + 200, y + 300, 100, -5, arcade.color.GRAY)
 
 
-# HELICOPTER HITBOX
-
-def draw_helihitbox(helihitbox):
-    for helihitbox in all_hhb:
-        arcade.draw_xywh_rectangle_outline(helihitbox[HHB_X],
-                                           helihitbox[HHB_Y],
-                                           helihitbox[HHB_WIDTH],
-                                           helihitbox[HHB_HEIGHT],
-                                           helihitbox[HHB_COLOR])
-
-    # BOTTOM WALL HIT DETECTION
-
+    #WALL HIT DETECTION
 
 def hit_detection():
     for wallt in top_walls:
@@ -272,6 +293,5 @@ def hit_detection():
         return False
 
 
-
 if __name__ == '__main__':
-    setup()                                                                                                                                                                          
+    setup()                                                                                                                                                                   
