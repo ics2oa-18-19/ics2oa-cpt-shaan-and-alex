@@ -1,4 +1,4 @@
-import arcade
+             import arcade
 import random
 
 #Screen Dimensions
@@ -23,7 +23,9 @@ WALLb_COLOR = 4
 wallb1 = [690, 0, 25, random.randrange(0, HEIGHT - 200), arcade.color.MAROON]
 wallb2 = [1390, 0, 25, random.randrange(0, HEIGHT - 200), arcade.color.MAROON]
 bottom_walls = [wallb1, wallb2]
-
+wall2b1 = [690, 0, 25, random.randrange(0, HEIGHT - 300), arcade.color.BLACK]
+wall2b2 = [1390, 0, 25, random.randrange(0, HEIGHT - 300), arcade.color.BLACK]
+bottom_walls2 = [wall2b1, wall2b2]
 
     #Top Wall Code
 
@@ -36,6 +38,9 @@ WALLt_COLOR = 4
 wallt1 = [690, wallb1[WALLb_HEIGHT] + 200, 25, HEIGHT - wallb1[WALLb_HEIGHT], arcade.color.MAROON]
 wallt2 = [1390, wallb2[WALLb_HEIGHT] + 200, 25, HEIGHT - wallb2[WALLb_HEIGHT], arcade.color.MAROON]
 top_walls = [wallt1, wallt2]
+wall2t1 = [690, wall2b1[WALLb_HEIGHT] + 300, 25, HEIGHT - wall2b1[WALLb_HEIGHT], arcade.color.BLACK]
+wall2t2 = [1390, wall2b2[WALLb_HEIGHT] + 300, 25, HEIGHT - wall2b2[WALLb_HEIGHT], arcade.color.BLACK]
+top_walls2 = [wall2t1, wall2t2]
 up_pressed = False
 down_pressed = False
 
@@ -86,6 +91,38 @@ def update(delta_time):
             score += 1
         if hit_detection() == True:
             current_screen = "score"
+
+
+    if current_screen == "play2":
+        if y <= 290:
+            if up_pressed:
+                y += 10
+                for helihitbox in all_hhb:
+                    helihitbox[HHB_Y] += 10
+        if y >= -280:
+            if up_pressed == False:
+                y -= 10
+                for helihitbox in all_hhb:
+                    helihitbox[HHB_Y] -= 10
+        for wallb in bottom_walls2:
+            wallb[WALLb_X] -= 10
+            if wallb[WALLb_X] <= -25:
+                wallb[WALLb_X] = 1390
+                wallb[WALLb_HEIGHT] = random.randrange(0, HEIGHT - 200)
+        for wallt in top_walls2:
+            wallt[WALLt_X] -= 10
+            if wall2t1[WALLt_X] <= -25:
+                wall2t1[WALLt_X] = 1390
+                wall2t1[WALLt_Y] = wall2b1[WALLb_HEIGHT] + 300
+                wall2t1[WALLt_HEIGHT] = HEIGHT - wall2b1[WALLb_HEIGHT]
+            if wall2t2[WALLt_X] <= -25:
+                wall2t2[WALLt_X] = 1390
+                wall2t2[WALLt_Y] = wall2b2[WALLb_HEIGHT] + 300
+                wall2t2[WALLt_HEIGHT] = HEIGHT - wall2b2[WALLb_HEIGHT]
+        if score_system2() == True:
+            score += 1
+        if hit_detection2() == True:
+            current_screen = "score2"
     if current_screen == "reset":
         x = 0
         y = 0
@@ -101,6 +138,21 @@ def update(delta_time):
         helihitbox3[HHB_Y] = y + 395
         score = 0
         current_screen = "play"
+    if current_screen == "reset2":
+        x = 0
+        y = 0
+        wall2b1[WALLb_X] = 690
+        wall2b2[WALLb_X] = 1390
+        wall2t1[WALLt_X] = 690
+        wall2t2[WALLt_X] = 1390
+        helihitbox1[HHB_X] = x + 200
+        helihitbox1[HHB_Y] = y + 295
+        helihitbox2[HHB_X] = x + 100
+        helihitbox2[HHB_Y] = y + 340
+        helihitbox3[HHB_X] = x + 75
+        helihitbox3[HHB_Y] = y + 395
+        score = 0
+        current_screen = "play2"
 
 
 
@@ -123,6 +175,13 @@ def on_draw():
             draw_wallb(wallb)
         for wallt in top_walls:
             draw_wallt(wallt)
+        arcade.draw_text(f"{score}", 20, 690, arcade.color.BLACK)
+    if current_screen == "play2":
+        draw_helicopter(x, y)
+        for wallb in bottom_walls2:
+            draw_wall2b()
+        for wallt in top_walls2:
+            draw_wall2t()
         arcade.draw_text(f"{score}", 20, 690, arcade.color.BLACK)
     if current_screen == "pause":
         draw_helicopter(x, y)
@@ -158,6 +217,11 @@ def on_draw():
         arcade.draw_text(f"Score: {score}", HEIGHT / 10, WIDTH / 2 - 20, arcade.color.BLACK)
         arcade.draw_text("To return to menu, press ESC", HEIGHT / 10, WIDTH / 2 - 60, arcade.color.BLACK)
         arcade.draw_text("To replay, press SPACE", HEIGHT / 10, WIDTH / 2 - 100, arcade.color.BLACK)
+    if current_screen == "score2":
+        arcade.draw_text(f"Score: {score}", HEIGHT / 10, WIDTH / 2 - 20, arcade.color.BLACK)
+        arcade.draw_text("To return to menu, press ESC", HEIGHT / 10, WIDTH / 2 - 60, arcade.color.BLACK)
+        arcade.draw_text("To replay, press SPACE", HEIGHT / 10, WIDTH / 2 - 100, arcade.color.BLACK)
+
 
 
     #Score Code
@@ -181,6 +245,8 @@ def on_key_press(key, modifiers):
             current_screen = "Instruction"
         if key == arcade.key.ESCAPE:
             quit()
+        if key == arcade.key.ENTER:
+            current_screen = "reset2"
     if current_screen == "Instruction":
         if key == arcade.key.ESCAPE:
             current_screen = "menu"
@@ -199,6 +265,20 @@ def on_key_press(key, modifiers):
             current_screen = "reset"
         if key == arcade.key.ESCAPE:
             current_screen = "menu"
+            
+            
+    if current_screen == "score2":
+        if key == arcade.key.SPACE:
+            current_screen = "reset2"
+        if key == arcade.key.ESCAPE:
+            current_screen = "menu"
+    if current_screen == "play2":
+        if key == arcade.key.W:
+            up_pressed = True
+        if key == arcade.key.S:
+            down_pressed = True
+        if key == arcade.key.ESCAPE:
+            current_screen = "pause"
 
 
 
@@ -233,8 +313,6 @@ def setup():
 
 
 
-# BOTTOM WALL CODE
-
 def draw_wallb(wallb):
     arcade.draw_xywh_rectangle_filled(wallb[WALLb_X],
                                       wallb[WALLb_Y],
@@ -242,8 +320,6 @@ def draw_wallb(wallb):
                                       wallb[WALLb_HEIGHT],
                                       wallb[WALLb_COLOR])
 
-
-# TOP WALL CODE
 
 def draw_wallt(wallt):
     arcade.draw_xywh_rectangle_filled(wallt[WALLt_X],
@@ -253,8 +329,6 @@ def draw_wallt(wallt):
                                       wallt[WALLt_COLOR])
 
 
-
-# HELICOPTER SHAPES
 
 def draw_helicopter(x, y):
     arcade.draw_xywh_rectangle_filled(x + 200, y + 380, 100, -70, arcade.color.GRAY)
@@ -271,9 +345,8 @@ def draw_helicopter(x, y):
     arcade.draw_xywh_rectangle_filled(x + 225, y + 310, 5, -10, arcade.color.GRAY)
     arcade.draw_xywh_rectangle_filled(x + 275, y + 310, -5, -10, arcade.color.GRAY)
     arcade.draw_xywh_rectangle_filled(x + 200, y + 300, 100, -5, arcade.color.GRAY)
-
-
-    #WALL HIT DETECTION
+    
+    
 
 def hit_detection():
     for wallt in top_walls:
@@ -292,6 +365,53 @@ def hit_detection():
     else:
         return False
 
+    
+    #GAMEMODE 2 FUNCTIONS
+    
+def score_system2():
+    for wallb in bottom_walls2:
+        for wallt in top_walls2:
+            if (helihitbox1[HHB_X] == wallb[WALLb_X] and helihitbox1[HHB_Y] > wallb[WALLb_Y]
+                    + wallb[WALLb_HEIGHT] and helihitbox1[HHB_Y] < wallt[WALLt_Y]):
+                return True
+    else:
+        return False
+    
+def hit_detection2():
+    for wallt in top_walls2:
+        for wallb in bottom_walls2:
+            for helihitbox in all_hhb:
+                if (helihitbox[HHB_Y] <= wallb[WALLb_HEIGHT] and helihitbox[HHB_X] < wallb[WALLb_X] and helihitbox[HHB_X]
+                        + helihitbox[HHB_WIDTH] > wallb[WALLb_X] + wallb[WALLb_WIDTH] or helihitbox[HHB_X] +
+                        helihitbox[HHB_WIDTH] >= wallb[WALLb_X] and helihitbox[HHB_X] + helihitbox[HHB_WIDTH]
+                        <= wallb[WALLb_X] + wallb[WALLb_WIDTH] and helihitbox[HHB_Y] < wallb[WALLb_HEIGHT]):
+                    return True
+                elif (helihitbox3[HHB_Y] >= wallt[WALLt_Y] and helihitbox3[HHB_X] < wallt[WALLt_X] and helihitbox3[HHB_X]
+                        + helihitbox3[HHB_WIDTH] > wallt[WALLt_X] + wallt[WALLt_WIDTH] or helihitbox3[HHB_X] +
+                        helihitbox3[HHB_WIDTH] >= wallt[WALLt_X] and helihitbox3[HHB_X] + helihitbox3[HHB_WIDTH]
+                        <= wallt[WALLt_X] + wallt[WALLt_WIDTH] and helihitbox3[HHB_Y] > wallt[WALLt_Y]):
+                    return True
+    else:
+        return False
+
+
+def draw_wall2b():
+    for wall2b in bottom_walls2:
+        arcade.draw_xywh_rectangle_filled(wall2b[WALLb_X],
+                                          wall2b[WALLb_Y],
+                                          wall2b[WALLb_WIDTH],
+                                          wall2b[WALLb_HEIGHT],
+                                          wall2b[WALLb_COLOR])
+       
+def draw_wall2t():
+    for wall2t in top_walls2:
+        arcade.draw_xywh_rectangle_filled(wall2t[WALLt_X],
+                                          wall2t[WALLt_Y],
+                                          wall2t[WALLt_WIDTH],
+                                          wall2t[WALLt_HEIGHT],
+                                          wall2t[WALLt_COLOR])
+        
+
 
 if __name__ == '__main__':
-    setup()                                                                                                                                                                   
+    setup()                                                                                                                              
