@@ -1,4 +1,4 @@
-             import arcade
+import arcade
 import random
 
 #Screen Dimensions
@@ -20,11 +20,11 @@ WALLb_WIDTH = 2
 WALLb_HEIGHT = 3
 WALLb_COLOR = 4
 
-wallb1 = [690, 0, 25, random.randrange(0, HEIGHT - 200), arcade.color.MAROON]
-wallb2 = [1390, 0, 25, random.randrange(0, HEIGHT - 200), arcade.color.MAROON]
+wallb1 = [1380, 0, 25, random.randrange(0, HEIGHT - 200), arcade.color.MAROON]
+wallb2 = [2080, 0, 25, random.randrange(0, HEIGHT - 200), arcade.color.MAROON]
 bottom_walls = [wallb1, wallb2]
-wall2b1 = [690, 0, 25, random.randrange(0, HEIGHT - 300), arcade.color.BLACK]
-wall2b2 = [1390, 0, 25, random.randrange(0, HEIGHT - 300), arcade.color.BLACK]
+wall2b1 = [1380, 0, 25, random.randrange(0, HEIGHT - 250), arcade.color.RED]
+wall2b2 = [2080, 0, 25, random.randrange(0, HEIGHT - 250), arcade.color.RED]
 bottom_walls2 = [wall2b1, wall2b2]
 
     #Top Wall Code
@@ -35,11 +35,11 @@ WALLt_WIDTH = 2
 WALLt_HEIGHT = 3
 WALLt_COLOR = 4
 
-wallt1 = [690, wallb1[WALLb_HEIGHT] + 200, 25, HEIGHT - wallb1[WALLb_HEIGHT], arcade.color.MAROON]
-wallt2 = [1390, wallb2[WALLb_HEIGHT] + 200, 25, HEIGHT - wallb2[WALLb_HEIGHT], arcade.color.MAROON]
+wallt1 = [1280, wallb1[WALLb_HEIGHT] + 200, 25, HEIGHT - wallb1[WALLb_HEIGHT], arcade.color.MAROON]
+wallt2 = [2080, wallb2[WALLb_HEIGHT] + 200, 25, HEIGHT - wallb2[WALLb_HEIGHT], arcade.color.MAROON]
 top_walls = [wallt1, wallt2]
-wall2t1 = [690, wall2b1[WALLb_HEIGHT] + 300, 25, HEIGHT - wall2b1[WALLb_HEIGHT], arcade.color.BLACK]
-wall2t2 = [1390, wall2b2[WALLb_HEIGHT] + 300, 25, HEIGHT - wall2b2[WALLb_HEIGHT], arcade.color.BLACK]
+wall2t1 = [1280, wall2b1[WALLb_HEIGHT] + 250, 25, HEIGHT - wall2b1[WALLb_HEIGHT], arcade.color.RED]
+wall2t2 = [2080, wall2b2[WALLb_HEIGHT] + 250, 25, HEIGHT - wall2b2[WALLb_HEIGHT], arcade.color.RED]
 top_walls2 = [wall2t1, wall2t2]
 up_pressed = False
 down_pressed = False
@@ -108,16 +108,16 @@ def update(delta_time):
             wallb[WALLb_X] -= 10
             if wallb[WALLb_X] <= -25:
                 wallb[WALLb_X] = 1390
-                wallb[WALLb_HEIGHT] = random.randrange(0, HEIGHT - 200)
+                wallb[WALLb_HEIGHT] = random.randrange(0, HEIGHT - 250)
         for wallt in top_walls2:
             wallt[WALLt_X] -= 10
             if wall2t1[WALLt_X] <= -25:
                 wall2t1[WALLt_X] = 1390
-                wall2t1[WALLt_Y] = wall2b1[WALLb_HEIGHT] + 300
+                wall2t1[WALLt_Y] = wall2b1[WALLb_HEIGHT] + 250
                 wall2t1[WALLt_HEIGHT] = HEIGHT - wall2b1[WALLb_HEIGHT]
             if wall2t2[WALLt_X] <= -25:
                 wall2t2[WALLt_X] = 1390
-                wall2t2[WALLt_Y] = wall2b2[WALLb_HEIGHT] + 300
+                wall2t2[WALLt_Y] = wall2b2[WALLb_HEIGHT] + 250
                 wall2t2[WALLt_HEIGHT] = HEIGHT - wall2b2[WALLb_HEIGHT]
         if score_system2() == True:
             score += 1
@@ -126,12 +126,12 @@ def update(delta_time):
     if current_screen == "reset":
         x = 0
         y = 0
-        wallb1[WALLb_X] = 690
-        wallb2[WALLb_X] = 1390
-        wallt1[WALLt_X] = 690
-        wallt2[WALLt_X] = 1390
+        wallb1[WALLb_X] = 1380
+        wallb2[WALLb_X] = 2080
+        wallt1[WALLt_X] = 1380
+        wallt2[WALLt_X] = 2080
         helihitbox1[HHB_X] = x + 200
-        helihitbox1[HHB_Y] = y + 295
+        helihitbox1[HHB_Y] = y + 295 
         helihitbox2[HHB_X] = x + 100
         helihitbox2[HHB_Y] = y + 340
         helihitbox3[HHB_X] = x + 75
@@ -141,10 +141,10 @@ def update(delta_time):
     if current_screen == "reset2":
         x = 0
         y = 0
-        wall2b1[WALLb_X] = 690
-        wall2b2[WALLb_X] = 1390
-        wall2t1[WALLt_X] = 690
-        wall2t2[WALLt_X] = 1390
+        wall2b1[WALLb_X] = 1380
+        wall2b2[WALLb_X] = 2080
+        wall2t1[WALLt_X] = 1380
+        wall2t2[WALLt_X] = 2080
         helihitbox1[HHB_X] = x + 200
         helihitbox1[HHB_Y] = y + 295
         helihitbox2[HHB_X] = x + 100
@@ -165,36 +165,54 @@ def on_draw():
                          font_name="garamond")
         arcade.draw_text("Press space to play", HEIGHT / 2 - 100, WIDTH / 4.5, arcade.color.BLACK,
                          font_name="garamond")
-        arcade.draw_text("Press I to read instructions", HEIGHT / 2 - 100, WIDTH / 5, arcade.color.BLACK,
+        arcade.draw_text("Press I to read instructions", HEIGHT / 2 - 100, WIDTH / 5.5, arcade.color.BLACK,
                          font_name="garamond")
-        arcade.draw_text("Press ESC to Quit", HEIGHT / 2 - 100, WIDTH / 5.5 , arcade.color.BLACK,
+        arcade.draw_text("Press ENTER to switch to Gravity Mode", HEIGHT / 2 - 100, WIDTH / 5, arcade.color.BLACK,
                          font_name="garamond")
+        arcade.draw_text("Press ESC to Quit", HEIGHT / 2 - 100, WIDTH / 6 , arcade.color.BLACK,font_name="garamond")
+        arcade.set_background_color(arcade.color.LIGHT_BLUE)
     if current_screen == "play":
         draw_helicopter(x, y)
         for wallb in bottom_walls:
             draw_wallb(wallb)
         for wallt in top_walls:
             draw_wallt(wallt)
-        arcade.draw_text(f"{score}", 20, 690, arcade.color.BLACK)
+        arcade.set_background_color(arcade.color.LIGHT_BLUE)
+        arcade.draw_text(f"Score: {score}", 20, 690, arcade.color.BLACK)
     if current_screen == "play2":
-        draw_helicopter(x, y)
+        draw_helicopter2(x, y)
         for wallb in bottom_walls2:
             draw_wall2b()
         for wallt in top_walls2:
             draw_wall2t()
-        arcade.draw_text(f"{score}", 20, 690, arcade.color.BLACK)
+        arcade.draw_text(f"Score: {score}", 20, 690, arcade.color.WHITE)
+        arcade.set_background_color(arcade.color.BLACK)
     if current_screen == "pause":
         draw_helicopter(x, y)
         for wallb in bottom_walls:
             draw_wallb(wallb)
         for wallt in top_walls:
             draw_wallt(wallt)
-        arcade.draw_text(f"{score}", 20, 690, arcade.color.BLACK)
+        arcade.draw_text(f"Score: {score}", 20, 690, arcade.color.BLACK)
         arcade.draw_text("PAUSE", HEIGHT / 2 + 150, WIDTH / 4, arcade.color.BLACK, font_size=60,
                          font_name="garamond")
         arcade.draw_text("Press Space to Resume", HEIGHT / 2 + 80, WIDTH / 4 - 50, arcade.color.BLACK, font_size=30,
                          font_name="garamond")
+        arcade.set_background_color(arcade.color.LIGHT_BLUE)
+    if current_screen == "pause2":
+        draw_helicopter2(x, y)
+        for wallb in bottom_walls2:
+            draw_wallb(wallb)
+        for wallt in top_walls2:
+            draw_wallt(wallt)
+        arcade.draw_text(f"Score: {score}", 20, 690, arcade.color.WHITE)
+        arcade.draw_text("PAUSE", HEIGHT / 2 + 150, WIDTH / 4, arcade.color.WHITE, font_size=60,
+                         font_name="garamond")
+        arcade.draw_text("Press Space to Resume", HEIGHT / 2 + 80, WIDTH / 4 - 50, arcade.color.WHITE, font_size=30,
+                         font_name="garamond")
+        arcade.set_background_color(arcade.color.BLACK)
     if current_screen == "Instruction":
+        arcade.set_background_color(arcade.color.LIGHT_BLUE)
         arcade.draw_text("Welcome to Hoppy Helecopter! To move your helicopter use W for up and S for down.",
                          HEIGHT / 2, WIDTH / 2 - 40, arcade.color.BLACK)
         arcade.draw_text("You can use the esc key to leave the game at any time", HEIGHT / 2, WIDTH / 2 - 60,
@@ -214,13 +232,21 @@ def on_draw():
         arcade.draw_text("S = DOWN:", HEIGHT / 10, WIDTH / 3 - 60, arcade.color.BLACK)
         arcade.draw_text("SPACE = START:", HEIGHT / 10, WIDTH / 3 - 90, arcade.color.BLACK)
     if current_screen == "score":
-        arcade.draw_text(f"Score: {score}", HEIGHT / 10, WIDTH / 2 - 20, arcade.color.BLACK)
-        arcade.draw_text("To return to menu, press ESC", HEIGHT / 10, WIDTH / 2 - 60, arcade.color.BLACK)
-        arcade.draw_text("To replay, press SPACE", HEIGHT / 10, WIDTH / 2 - 100, arcade.color.BLACK)
+        arcade.set_background_color(arcade.color.LIGHT_BLUE)
+        arcade.draw_text(f"Score: {score}", HEIGHT / 2 - 100, WIDTH / 4, arcade.color.BLACK, font_size=60,
+                         font_name="garamond")
+        arcade.draw_text("To return to menu, press ESC", HEIGHT / 10, WIDTH / 2 - 20, arcade.color.BLACK, font_size=20,
+                         font_name="garamond")
+        arcade.draw_text("To replay, press SPACE", HEIGHT / 10, WIDTH / 2 - 60, arcade.color.BLACK, font_size=20,
+                         font_name="garamond")
     if current_screen == "score2":
-        arcade.draw_text(f"Score: {score}", HEIGHT / 10, WIDTH / 2 - 20, arcade.color.BLACK)
-        arcade.draw_text("To return to menu, press ESC", HEIGHT / 10, WIDTH / 2 - 60, arcade.color.BLACK)
-        arcade.draw_text("To replay, press SPACE", HEIGHT / 10, WIDTH / 2 - 100, arcade.color.BLACK)
+        arcade.set_background_color(arcade.color.BLACK)
+        arcade.draw_text(f"Score: {score}", HEIGHT / 2 - 100, WIDTH / 4, arcade.color.WHITE, font_size=60,
+                         font_name="garamond")
+        arcade.draw_text("To return to menu, press ESC", HEIGHT / 10, WIDTH / 2 - 20, arcade.color.WHITE, font_size=20,
+                         font_name="garamond")
+        arcade.draw_text("To replay, press ENTER", HEIGHT / 10, WIDTH / 2 - 60, arcade.color.WHITE, font_size=20,
+                         font_name="garamond")
 
 
 
@@ -265,20 +291,21 @@ def on_key_press(key, modifiers):
             current_screen = "reset"
         if key == arcade.key.ESCAPE:
             current_screen = "menu"
-            
-            
+
+
     if current_screen == "score2":
-        if key == arcade.key.SPACE:
+        if key == arcade.key.ENTER:
             current_screen = "reset2"
         if key == arcade.key.ESCAPE:
             current_screen = "menu"
     if current_screen == "play2":
         if key == arcade.key.W:
             up_pressed = True
-        if key == arcade.key.S:
-            down_pressed = True
         if key == arcade.key.ESCAPE:
-            current_screen = "pause"
+            current_screen = "pause2"
+    if current_screen == "pause2":
+        if key == arcade.key.SPACE:
+            current_screen = "play2"
 
 
 
@@ -296,12 +323,11 @@ def on_mouse_press(x, y, button, modifiers):
     pass
 
 
-
 def setup():
+    global current_screen
     arcade.open_window(WIDTH, HEIGHT, "My Arcade Game")
     arcade.set_background_color(arcade.color.LIGHT_BLUE)
     arcade.schedule(update, 1 / 60)
-
     # Override arcade window methods
     window = arcade.get_window()
     window.on_draw = on_draw
@@ -335,18 +361,43 @@ def draw_helicopter(x, y):
     arcade.draw_xywh_rectangle_filled(x + 250, y + 380, 50, -35, arcade.color.WHITE)
     arcade.draw_xywh_rectangle_filled(x + 200, y + 365, -100, -25, arcade.color.GRAY)
     arcade.draw_triangle_filled(x + 200, y + 380, x + 235, y + 380, x + 200, y + 400, arcade.color.GRAY)
-    arcade.draw_circle_filled(x + 200, y + 400, 10, arcade.color.BLACK)
+    arcade.draw_circle_filled(x + 200, y + 400, 10, arcade.color.WHITE)
     arcade.draw_xywh_rectangle_filled(x + 205, y + 405, 120, -10, arcade.color.GRAY)
     arcade.draw_xywh_rectangle_filled(x + 195, y + 405, -120, -10, arcade.color.GRAY)
     arcade.draw_triangle_filled(x + 100, y + 365, x + 110, y + 365, x + 100, y + 375, arcade.color.GRAY)
-    arcade.draw_circle_filled(x + 100, y + 375, 5, arcade.color.BLACK)
+    arcade.draw_circle_filled(x + 100, y + 375, 5, arcade.color.WHITE)
     arcade.draw_xywh_rectangle_filled(x + 102.5, y + 377.5, 25, -5, arcade.color.GRAY)
     arcade.draw_xywh_rectangle_filled(x + 97.5, y + 377.5, -25, -5, arcade.color.GRAY)
     arcade.draw_xywh_rectangle_filled(x + 225, y + 310, 5, -10, arcade.color.GRAY)
     arcade.draw_xywh_rectangle_filled(x + 275, y + 310, -5, -10, arcade.color.GRAY)
     arcade.draw_xywh_rectangle_filled(x + 200, y + 300, 100, -5, arcade.color.GRAY)
-    
-    
+
+def draw_helicopter2(x, y):
+    arcade.draw_xywh_rectangle_filled(x + 200, y + 380, 100, -70, arcade.color.BLACK)
+    arcade.draw_xywh_rectangle_outline(x + 200, y + 380, 100, -70, arcade.color.WHITE)
+    arcade.draw_xywh_rectangle_filled(x + 250, y + 380, 50, -35, arcade.color.RED)
+    arcade.draw_xywh_rectangle_outline(x + 250, y + 380, 50, -35, arcade.color.WHITE)
+    arcade.draw_xywh_rectangle_filled(x + 200, y + 365, -100, -25, arcade.color.BLACK)
+    arcade.draw_xywh_rectangle_outline(x + 200, y + 365, -100, -25, arcade.color.WHITE)
+    arcade.draw_triangle_filled(x + 200, y + 380, x + 235, y + 380, x + 200, y + 400, arcade.color.BLACK)
+    arcade.draw_triangle_outline(x + 200, y + 380, x + 235, y + 380, x + 200, y + 400, arcade.color.WHITE)
+    arcade.draw_circle_filled(x + 200, y + 400, 10, arcade.color.RED)
+    arcade.draw_circle_outline(x + 200, y + 400, 10, arcade.color.WHITE)
+    arcade.draw_xywh_rectangle_filled(x + 205, y + 405, 120, -10, arcade.color.WHITE)
+    arcade.draw_xywh_rectangle_filled(x + 195, y + 405, -120, -10, arcade.color.WHITE)
+    arcade.draw_triangle_filled(x + 100, y + 365, x + 110, y + 365, x + 100, y + 375, arcade.color.RED)
+    arcade.draw_circle_filled(x + 100, y + 375, 5, arcade.color.RED)
+    arcade.draw_circle_outline(x + 100, y + 375, 5, arcade.color.WHITE)
+    arcade.draw_xywh_rectangle_filled(x + 102.5, y + 377.5, 25, -5, arcade.color.WHITE)
+    arcade.draw_xywh_rectangle_filled(x + 97.5, y + 377.5, -25, -5, arcade.color.WHITE)
+    arcade.draw_xywh_rectangle_filled(x + 225, y + 310, 5, -10, arcade.color.BLACK)
+    arcade.draw_xywh_rectangle_outline(x + 225, y + 310, 5, -10, arcade.color.WHITE)
+    arcade.draw_xywh_rectangle_filled(x + 275, y + 310, -5, -10, arcade.color.BLACK)
+    arcade.draw_xywh_rectangle_outline(x + 275, y + 310, -5, -10, arcade.color.WHITE)
+    arcade.draw_xywh_rectangle_filled(x + 200, y + 300, 100, -5, arcade.color.WHITE)
+
+
+
 
 def hit_detection():
     for wallt in top_walls:
@@ -365,9 +416,9 @@ def hit_detection():
     else:
         return False
 
-    
+
     #GAMEMODE 2 FUNCTIONS
-    
+
 def score_system2():
     for wallb in bottom_walls2:
         for wallt in top_walls2:
@@ -376,7 +427,7 @@ def score_system2():
                 return True
     else:
         return False
-    
+
 def hit_detection2():
     for wallt in top_walls2:
         for wallb in bottom_walls2:
@@ -402,7 +453,12 @@ def draw_wall2b():
                                           wall2b[WALLb_WIDTH],
                                           wall2b[WALLb_HEIGHT],
                                           wall2b[WALLb_COLOR])
-       
+        arcade.draw_xywh_rectangle_outline(wall2b[WALLb_X],
+                                           wall2b[WALLb_Y],
+                                           wall2b[WALLb_WIDTH],
+                                           wall2b[WALLb_HEIGHT],
+                                           arcade.color.WHITE)
+
 def draw_wall2t():
     for wall2t in top_walls2:
         arcade.draw_xywh_rectangle_filled(wall2t[WALLt_X],
@@ -410,8 +466,14 @@ def draw_wall2t():
                                           wall2t[WALLt_WIDTH],
                                           wall2t[WALLt_HEIGHT],
                                           wall2t[WALLt_COLOR])
-        
+        arcade.draw_xywh_rectangle_outline(wall2t[WALLt_X],
+                                           wall2t[WALLt_Y],
+                                           wall2t[WALLt_WIDTH],
+                                           wall2t[WALLt_HEIGHT],
+                                           arcade.color.WHITE)
+
+
 
 
 if __name__ == '__main__':
-    setup()                                                                                                                              
+    setup()
