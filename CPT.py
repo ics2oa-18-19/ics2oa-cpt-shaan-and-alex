@@ -6,11 +6,12 @@ WIDTH = 1365
 HEIGHT = 710
 
 #Variables
-current_screen = "menu"
+current_screen = "start"
 x = 0
 y = 0
+xx = 0
 score = 0
-
+cloud_amount = 8
 
     #Bottom Wall Code
 
@@ -23,8 +24,8 @@ WALLb_COLOR = 4
 wallb1 = [1380, 0, 25, random.randrange(0, HEIGHT - 200), arcade.color.MAROON]
 wallb2 = [2080, 0, 25, random.randrange(0, HEIGHT - 200), arcade.color.MAROON]
 bottom_walls = [wallb1, wallb2]
-wall2b1 = [1380, 0, 25, random.randrange(0, HEIGHT - 250), arcade.color.RED]
-wall2b2 = [2080, 0, 25, random.randrange(0, HEIGHT - 250), arcade.color.RED]
+wall2b1 = [1380, 0, 25, random.randrange(0, HEIGHT - 250), arcade.color.WHITE]
+wall2b2 = [2080, 0, 25, random.randrange(0, HEIGHT - 250), arcade.color.WHITE]
 bottom_walls2 = [wall2b1, wall2b2]
 
     #Top Wall Code
@@ -38,9 +39,10 @@ WALLt_COLOR = 4
 wallt1 = [1280, wallb1[WALLb_HEIGHT] + 200, 25, HEIGHT - wallb1[WALLb_HEIGHT], arcade.color.MAROON]
 wallt2 = [2080, wallb2[WALLb_HEIGHT] + 200, 25, HEIGHT - wallb2[WALLb_HEIGHT], arcade.color.MAROON]
 top_walls = [wallt1, wallt2]
-wall2t1 = [1280, wall2b1[WALLb_HEIGHT] + 250, 25, HEIGHT - wall2b1[WALLb_HEIGHT], arcade.color.RED]
-wall2t2 = [2080, wall2b2[WALLb_HEIGHT] + 250, 25, HEIGHT - wall2b2[WALLb_HEIGHT], arcade.color.RED]
+wall2t1 = [1280, wall2b1[WALLb_HEIGHT] + 250, 25, HEIGHT - wall2b1[WALLb_HEIGHT], arcade.color.WHITE]
+wall2t2 = [2080, wall2b2[WALLb_HEIGHT] + 250, 25, HEIGHT - wall2b2[WALLb_HEIGHT], arcade.color.WHITE]
 top_walls2 = [wall2t1, wall2t2]
+
 up_pressed = False
 down_pressed = False
 
@@ -57,10 +59,44 @@ helihitbox2 = [x + 100, y + 340, 100, 25]
 helihitbox3 = [x + 75, y + 395, 250, 10]
 all_hhb = [helihitbox1, helihitbox2, helihitbox3]
 
+CLD_X = 0
+CLD_Y = 1
+CLD_R = 2
+CLD_COLOR = 3
+
+cloud1 = [random.randrange(50, 1300), random.randrange(50, 600), 25, arcade.color.WHITE_SMOKE]
+cloud2 = [cloud1[CLD_X] + 25, cloud1[CLD_Y] - 25, 25, arcade.color.WHITE_SMOKE]
+cloud3 = [cloud1[CLD_X] + 85, cloud1[CLD_Y], 25, arcade.color.WHITE_SMOKE]
+cloud4 = [cloud1[CLD_X] + 25, cloud1[CLD_Y] + 25, 25, arcade.color.WHITE_SMOKE]
+cloud5 = [cloud1[CLD_X] + 40, cloud1[CLD_Y] -15, 25, arcade.color.WHITE_SMOKE]
+cloud6 = [cloud1[CLD_X] + 40, cloud1[CLD_Y] + 15, 25, arcade.color.WHITE_SMOKE]
+cloud7 = [cloud1[CLD_X] + 50, cloud1[CLD_Y] + 5, 40, arcade.color.WHITE_SMOKE]
+cloud8 = [cloud1[CLD_X] + 55, cloud1[CLD_Y] - 20, 25, arcade.color.WHITE_SMOKE]
+all_clouds = [cloud1, cloud2, cloud3, cloud4, cloud5, cloud6, cloud7, cloud8]
     #Update Function
 
 def update(delta_time):
-    global up_pressed, down_pressed, x, y, current_screen, top_walls, bottom_walls, score, all_hhb
+    global up_pressed, down_pressed, x, xx, y, current_screen, top_walls, bottom_walls, score, all_hhb, cloud_amount
+    if current_screen == "start":
+        up_pressed = True
+        # while cloud_amount > 0:
+        #     cloud1[CLD_X] = random.randrange(50, 1300)
+        #     cloud1[CLD_Y] = random.randrange(50, 600)
+        #     cloud2[CLD_X] = cloud1[CLD_X] + 25
+        #     cloud2[CLD_Y] = cloud1[CLD_Y] - 25
+        #     cloud3[CLD_X] = cloud1[CLD_X] + 85
+        #     cloud3[CLD_Y] = cloud1[CLD_Y]
+        #     cloud4[CLD_X] = cloud1[CLD_X] + 25
+        #     cloud4[CLD_Y] = cloud1[CLD_Y] + 25
+        #     cloud5[CLD_X] = cloud1[CLD_X] + 40
+        #     cloud5[CLD_Y] = cloud1[CLD_Y] - 15
+        #     cloud6[CLD_X] = cloud1[CLD_X] + 40
+        #     cloud6[CLD_Y] = cloud1[CLD_Y] + 15
+        #     cloud7[CLD_X] = cloud1[CLD_X] + 50
+        #     cloud7[CLD_Y] = cloud1[CLD_Y] + 5
+        #     cloud8[CLD_X] = cloud1[CLD_X] + 55
+        #     cloud8[CLD_Y] = cloud1[CLD_Y] - 20
+        current_screen = "menu"
     if current_screen == "play":
         if y <= 290:
             if up_pressed:
@@ -131,13 +167,15 @@ def update(delta_time):
         wallt1[WALLt_X] = 1380
         wallt2[WALLt_X] = 2080
         helihitbox1[HHB_X] = x + 200
-        helihitbox1[HHB_Y] = y + 295 
+        helihitbox1[HHB_Y] = y + 295
         helihitbox2[HHB_X] = x + 100
         helihitbox2[HHB_Y] = y + 340
         helihitbox3[HHB_X] = x + 75
         helihitbox3[HHB_Y] = y + 395
         score = 0
         current_screen = "play"
+        up_pressed = False
+        down_pressed = False
     if current_screen == "reset2":
         x = 0
         y = 0
@@ -153,13 +191,33 @@ def update(delta_time):
         helihitbox3[HHB_Y] = y + 395
         score = 0
         current_screen = "play2"
-
+        up_pressed = False
+        down_pressed = False
+    if current_screen == "menu":
+        xx = 1045
+        x = -75
+        if up_pressed == True:
+            y += 10
+        if y == 250:
+            up_pressed = False
+            down_pressed = True
+        if down_pressed == True:
+            y -= 10
+        if y == -190:
+            down_pressed = False
+            up_pressed = True
+    if current_screen == "score":
+        up_pressed = True
+    if current_screen == "score2":
+        up_pressed = True
 
 
 def on_draw():
-    global x, y, wall1, score, helihitbox1
+    global x, y, score
     arcade.start_render()
     # Draw in here...
+    if current_screen == "start":
+            draw_cloud(cloud_amount)
     if current_screen == "menu":
         arcade.draw_text("HOPPY HELICOPTER", HEIGHT / 2 - 100, WIDTH / 4, arcade.color.BLACK, font_size=60,
                          font_name="garamond")
@@ -167,10 +225,12 @@ def on_draw():
                          font_name="garamond")
         arcade.draw_text("Press I to read instructions", HEIGHT / 2 - 100, WIDTH / 5.5, arcade.color.BLACK,
                          font_name="garamond")
-        arcade.draw_text("Press ENTER to switch to Gravity Mode", HEIGHT / 2 - 100, WIDTH / 5, arcade.color.BLACK,
+        arcade.draw_text("Press ENTER to switch to Ghost Mode(Very Hard)", HEIGHT / 2 - 100, WIDTH / 5, arcade.color.BLACK,
                          font_name="garamond")
         arcade.draw_text("Press ESC to Quit", HEIGHT / 2 - 100, WIDTH / 6 , arcade.color.BLACK,font_name="garamond")
         arcade.set_background_color(arcade.color.LIGHT_BLUE)
+        draw_helicopter(x, y)
+        draw_helicopter3(xx, y)
     if current_screen == "play":
         draw_helicopter(x, y)
         for wallb in bottom_walls:
@@ -196,7 +256,7 @@ def on_draw():
         arcade.draw_text(f"Score: {score}", 20, 690, arcade.color.BLACK)
         arcade.draw_text("PAUSE", HEIGHT / 2 + 150, WIDTH / 4, arcade.color.BLACK, font_size=60,
                          font_name="garamond")
-        arcade.draw_text("Press Space to Resume", HEIGHT / 2 + 80, WIDTH / 4 - 50, arcade.color.BLACK, font_size=30,
+        arcade.draw_text("Press ESCAPE to Resume", HEIGHT / 2 + 80, WIDTH / 4 - 50, arcade.color.BLACK, font_size=30,
                          font_name="garamond")
         arcade.set_background_color(arcade.color.LIGHT_BLUE)
     if current_screen == "pause2":
@@ -208,7 +268,7 @@ def on_draw():
         arcade.draw_text(f"Score: {score}", 20, 690, arcade.color.WHITE)
         arcade.draw_text("PAUSE", HEIGHT / 2 + 150, WIDTH / 4, arcade.color.WHITE, font_size=60,
                          font_name="garamond")
-        arcade.draw_text("Press Space to Resume", HEIGHT / 2 + 80, WIDTH / 4 - 50, arcade.color.WHITE, font_size=30,
+        arcade.draw_text("Press ESCAPE to Resume", HEIGHT / 2 + 80, WIDTH / 4 - 50, arcade.color.WHITE, font_size=30,
                          font_name="garamond")
         arcade.set_background_color(arcade.color.BLACK)
     if current_screen == "Instruction":
@@ -284,7 +344,7 @@ def on_key_press(key, modifiers):
         if key == arcade.key.ESCAPE:
             current_screen = "pause"
     if current_screen == "pause":
-        if key == arcade.key.SPACE:
+        if key == arcade.key.ESCAPE:
             current_screen = "play"
     if current_screen == "score":
         if key == arcade.key.SPACE:
@@ -304,18 +364,18 @@ def on_key_press(key, modifiers):
         if key == arcade.key.ESCAPE:
             current_screen = "pause2"
     if current_screen == "pause2":
-        if key == arcade.key.SPACE:
+        if key == arcade.key.ESCAPE:
             current_screen = "play2"
 
 
 
 def on_key_release(key, modifiers):
-    global up_pressed
-    if key == arcade.key.W:
-        up_pressed = False
-    global down_pressed
-    if key == arcade.key.S:
-        down_pressed = False
+    global up_pressed, down_pressed, current_screen
+    if current_screen == "play" or "play2":
+        if key == arcade.key.W:
+            up_pressed = False
+        if key == arcade.key.S:
+            down_pressed = False
 
 
 
@@ -373,28 +433,37 @@ def draw_helicopter(x, y):
     arcade.draw_xywh_rectangle_filled(x + 200, y + 300, 100, -5, arcade.color.GRAY)
 
 def draw_helicopter2(x, y):
-    arcade.draw_xywh_rectangle_filled(x + 200, y + 380, 100, -70, arcade.color.BLACK)
-    arcade.draw_xywh_rectangle_outline(x + 200, y + 380, 100, -70, arcade.color.WHITE)
-    arcade.draw_xywh_rectangle_filled(x + 250, y + 380, 50, -35, arcade.color.RED)
+    arcade.draw_xywh_rectangle_filled(x + 200, y + 380, 100, -70, arcade.color.WHITE)
+    arcade.draw_xywh_rectangle_filled(x + 250, y + 380, 50, -35, arcade.color.BLACK)
     arcade.draw_xywh_rectangle_outline(x + 250, y + 380, 50, -35, arcade.color.WHITE)
-    arcade.draw_xywh_rectangle_filled(x + 200, y + 365, -100, -25, arcade.color.BLACK)
-    arcade.draw_xywh_rectangle_outline(x + 200, y + 365, -100, -25, arcade.color.WHITE)
-    arcade.draw_triangle_filled(x + 200, y + 380, x + 235, y + 380, x + 200, y + 400, arcade.color.BLACK)
-    arcade.draw_triangle_outline(x + 200, y + 380, x + 235, y + 380, x + 200, y + 400, arcade.color.WHITE)
-    arcade.draw_circle_filled(x + 200, y + 400, 10, arcade.color.RED)
-    arcade.draw_circle_outline(x + 200, y + 400, 10, arcade.color.WHITE)
-    arcade.draw_xywh_rectangle_filled(x + 205, y + 405, 120, -10, arcade.color.WHITE)
-    arcade.draw_xywh_rectangle_filled(x + 195, y + 405, -120, -10, arcade.color.WHITE)
-    arcade.draw_triangle_filled(x + 100, y + 365, x + 110, y + 365, x + 100, y + 375, arcade.color.RED)
-    arcade.draw_circle_filled(x + 100, y + 375, 5, arcade.color.RED)
-    arcade.draw_circle_outline(x + 100, y + 375, 5, arcade.color.WHITE)
-    arcade.draw_xywh_rectangle_filled(x + 102.5, y + 377.5, 25, -5, arcade.color.WHITE)
-    arcade.draw_xywh_rectangle_filled(x + 97.5, y + 377.5, -25, -5, arcade.color.WHITE)
-    arcade.draw_xywh_rectangle_filled(x + 225, y + 310, 5, -10, arcade.color.BLACK)
+    arcade.draw_xywh_rectangle_filled(x + 200, y + 365, -100, -25, arcade.color.WHITE)
+    arcade.draw_triangle_filled(x + 200, y + 380, x + 235, y + 380, x + 200, y + 400, arcade.color.WHITE)
+    arcade.draw_circle_filled(x + 200, y + 400, 10, arcade.color.WHITE)
+    arcade.draw_xywh_rectangle_outline(x + 205, y + 405, 120, -10, arcade.color.WHITE)
+    arcade.draw_xywh_rectangle_outline(x + 195, y + 405, -120, -10, arcade.color.WHITE)
+    arcade.draw_triangle_filled(x + 100, y + 365, x + 110, y + 365, x + 100, y + 375, arcade.color.WHITE)
+    arcade.draw_circle_filled(x + 100, y + 375, 5, arcade.color.WHITE)
+    arcade.draw_xywh_rectangle_outline(x + 102.5, y + 377.5, 25, -5, arcade.color.WHITE)
+    arcade.draw_xywh_rectangle_outline(x + 97.5, y + 377.5, -25, -5, arcade.color.WHITE)
     arcade.draw_xywh_rectangle_outline(x + 225, y + 310, 5, -10, arcade.color.WHITE)
-    arcade.draw_xywh_rectangle_filled(x + 275, y + 310, -5, -10, arcade.color.BLACK)
     arcade.draw_xywh_rectangle_outline(x + 275, y + 310, -5, -10, arcade.color.WHITE)
-    arcade.draw_xywh_rectangle_filled(x + 200, y + 300, 100, -5, arcade.color.WHITE)
+    arcade.draw_xywh_rectangle_outline(x + 200, y + 300, 100, -5, arcade.color.WHITE)
+
+def draw_helicopter3(xx, y):
+    arcade.draw_xywh_rectangle_filled(xx + 200, y + 380, -100, -70, arcade.color.WHITE)
+    arcade.draw_xywh_rectangle_filled(xx + 100, y + 380, 50, -35, arcade.color.BLACK)
+    arcade.draw_xywh_rectangle_filled(xx + 200, y + 365, 100, -25, arcade.color.WHITE)
+    arcade.draw_triangle_filled(xx + 165, y + 380, xx + 200, y + 380, xx + 200, y + 400, arcade.color.WHITE)
+    arcade.draw_circle_filled(xx + 200, y + 400, 10, arcade.color.WHITE)
+    arcade.draw_xywh_rectangle_filled(xx + 205, y + 405, 120, -10, arcade.color.BLACK)
+    arcade.draw_xywh_rectangle_filled(xx + 195, y + 405, -120, -10, arcade.color.BLACK)
+    arcade.draw_triangle_filled(xx + 290, y + 365, xx + 300, y + 365, xx + 300, y + 375, arcade.color.WHITE)
+    arcade.draw_circle_filled(xx + 300, y + 375, 5, arcade.color.WHITE)
+    arcade.draw_xywh_rectangle_filled(xx + 302.5, y + 377.5, 25, -5, arcade.color.BLACK)
+    arcade.draw_xywh_rectangle_filled(xx + 297.5, y + 377.5, -25, -5, arcade.color.BLACK)
+    arcade.draw_xywh_rectangle_filled(xx + 125, y + 310, 5, -10, arcade.color.BLACK)
+    arcade.draw_xywh_rectangle_filled(xx + 175, y + 310, -5, -10, arcade.color.BLACK)
+    arcade.draw_xywh_rectangle_filled(xx + 200, y + 300, -100, -5, arcade.color.WHITE)
 
 
 
@@ -453,11 +522,6 @@ def draw_wall2b():
                                           wall2b[WALLb_WIDTH],
                                           wall2b[WALLb_HEIGHT],
                                           wall2b[WALLb_COLOR])
-        arcade.draw_xywh_rectangle_outline(wall2b[WALLb_X],
-                                           wall2b[WALLb_Y],
-                                           wall2b[WALLb_WIDTH],
-                                           wall2b[WALLb_HEIGHT],
-                                           arcade.color.WHITE)
 
 def draw_wall2t():
     for wall2t in top_walls2:
@@ -466,11 +530,30 @@ def draw_wall2t():
                                           wall2t[WALLt_WIDTH],
                                           wall2t[WALLt_HEIGHT],
                                           wall2t[WALLt_COLOR])
-        arcade.draw_xywh_rectangle_outline(wall2t[WALLt_X],
-                                           wall2t[WALLt_Y],
-                                           wall2t[WALLt_WIDTH],
-                                           wall2t[WALLt_HEIGHT],
-                                           arcade.color.WHITE)
+
+def draw_cloud(cloud_amount):
+        for clouds in all_clouds:
+            arcade.draw_circle_filled(clouds[CLD_X],
+                                      clouds[CLD_Y],
+                                      clouds[CLD_R],
+                                      clouds[CLD_COLOR])
+        # cloud1[CLD_X] = random.randrange(50, 1300)
+        # cloud1[CLD_Y] = random.randrange(50, 600)
+        # cloud2[CLD_X] = cloud1[CLD_X] + 25
+        # cloud2[CLD_Y] = cloud1[CLD_Y] - 25
+        # cloud3[CLD_X] = cloud1[CLD_X] + 85
+        # cloud3[CLD_Y] = cloud1[CLD_Y]
+        # cloud4[CLD_X] = cloud1[CLD_X] + 25
+        # cloud4[CLD_Y] = cloud1[CLD_Y] + 25
+        # cloud5[CLD_X] = cloud1[CLD_X] + 40
+        # cloud5[CLD_Y] = cloud1[CLD_Y] - 15
+        # cloud6[CLD_X] = cloud1[CLD_X] + 40
+        # cloud6[CLD_Y] = cloud1[CLD_Y] + 15
+        # cloud7[CLD_X] = cloud1[CLD_X] + 50
+        # cloud7[CLD_Y] = cloud1[CLD_Y] + 5
+        # cloud8[CLD_X] = cloud1[CLD_X] + 55
+        # cloud8[CLD_Y] = cloud1[CLD_Y] - 20
+
 
 
 
