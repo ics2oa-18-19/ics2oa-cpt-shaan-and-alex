@@ -11,7 +11,6 @@ x = 0
 y = 0
 xx = 0
 score = 0
-cloud_amount = 8
 
     #Bottom Wall Code
 
@@ -59,43 +58,11 @@ helihitbox2 = [x + 100, y + 340, 100, 25]
 helihitbox3 = [x + 75, y + 395, 250, 10]
 all_hhb = [helihitbox1, helihitbox2, helihitbox3]
 
-CLD_X = 0
-CLD_Y = 1
-CLD_R = 2
-CLD_COLOR = 3
-
-cloud1 = [random.randrange(50, 1300), random.randrange(50, 600), 25, arcade.color.WHITE_SMOKE]
-cloud2 = [cloud1[CLD_X] + 25, cloud1[CLD_Y] - 25, 25, arcade.color.WHITE_SMOKE]
-cloud3 = [cloud1[CLD_X] + 85, cloud1[CLD_Y], 25, arcade.color.WHITE_SMOKE]
-cloud4 = [cloud1[CLD_X] + 25, cloud1[CLD_Y] + 25, 25, arcade.color.WHITE_SMOKE]
-cloud5 = [cloud1[CLD_X] + 40, cloud1[CLD_Y] -15, 25, arcade.color.WHITE_SMOKE]
-cloud6 = [cloud1[CLD_X] + 40, cloud1[CLD_Y] + 15, 25, arcade.color.WHITE_SMOKE]
-cloud7 = [cloud1[CLD_X] + 50, cloud1[CLD_Y] + 5, 40, arcade.color.WHITE_SMOKE]
-cloud8 = [cloud1[CLD_X] + 55, cloud1[CLD_Y] - 20, 25, arcade.color.WHITE_SMOKE]
-all_clouds = [cloud1, cloud2, cloud3, cloud4, cloud5, cloud6, cloud7, cloud8]
-    #Update Function
 
 def update(delta_time):
     global up_pressed, down_pressed, x, xx, y, current_screen, top_walls, bottom_walls, score, all_hhb, cloud_amount
     if current_screen == "start":
         up_pressed = True
-        # while cloud_amount > 0:
-        #     cloud1[CLD_X] = random.randrange(50, 1300)
-        #     cloud1[CLD_Y] = random.randrange(50, 600)
-        #     cloud2[CLD_X] = cloud1[CLD_X] + 25
-        #     cloud2[CLD_Y] = cloud1[CLD_Y] - 25
-        #     cloud3[CLD_X] = cloud1[CLD_X] + 85
-        #     cloud3[CLD_Y] = cloud1[CLD_Y]
-        #     cloud4[CLD_X] = cloud1[CLD_X] + 25
-        #     cloud4[CLD_Y] = cloud1[CLD_Y] + 25
-        #     cloud5[CLD_X] = cloud1[CLD_X] + 40
-        #     cloud5[CLD_Y] = cloud1[CLD_Y] - 15
-        #     cloud6[CLD_X] = cloud1[CLD_X] + 40
-        #     cloud6[CLD_Y] = cloud1[CLD_Y] + 15
-        #     cloud7[CLD_X] = cloud1[CLD_X] + 50
-        #     cloud7[CLD_Y] = cloud1[CLD_Y] + 5
-        #     cloud8[CLD_X] = cloud1[CLD_X] + 55
-        #     cloud8[CLD_Y] = cloud1[CLD_Y] - 20
         current_screen = "menu"
     if current_screen == "play":
         if y <= 290:
@@ -208,16 +175,16 @@ def update(delta_time):
             up_pressed = True
     if current_screen == "score":
         up_pressed = True
+        y = 0
     if current_screen == "score2":
         up_pressed = True
+        y = 0
 
 
 def on_draw():
     global x, y, score
     arcade.start_render()
     # Draw in here...
-    if current_screen == "start":
-            draw_cloud(cloud_amount)
     if current_screen == "menu":
         arcade.draw_text("HOPPY HELICOPTER", HEIGHT / 2 - 100, WIDTH / 4, arcade.color.BLACK, font_size=60,
                          font_name="garamond")
@@ -231,7 +198,8 @@ def on_draw():
         arcade.set_background_color(arcade.color.LIGHT_BLUE)
         draw_helicopter(x, y)
         draw_helicopter3(xx, y)
-    if current_screen == "play":
+
+    elif current_screen == "play":
         draw_helicopter(x, y)
         for wallb in bottom_walls:
             draw_wallb(wallb)
@@ -239,15 +207,7 @@ def on_draw():
             draw_wallt(wallt)
         arcade.set_background_color(arcade.color.LIGHT_BLUE)
         arcade.draw_text(f"Score: {score}", 20, 690, arcade.color.BLACK)
-    if current_screen == "play2":
-        draw_helicopter2(x, y)
-        for wallb in bottom_walls2:
-            draw_wall2b()
-        for wallt in top_walls2:
-            draw_wall2t()
-        arcade.draw_text(f"Score: {score}", 20, 690, arcade.color.WHITE)
-        arcade.set_background_color(arcade.color.BLACK)
-    if current_screen == "pause":
+    elif current_screen == "pause":
         draw_helicopter(x, y)
         for wallb in bottom_walls:
             draw_wallb(wallb)
@@ -256,10 +216,28 @@ def on_draw():
         arcade.draw_text(f"Score: {score}", 20, 690, arcade.color.BLACK)
         arcade.draw_text("PAUSE", HEIGHT / 2 + 150, WIDTH / 4, arcade.color.BLACK, font_size=60,
                          font_name="garamond")
-        arcade.draw_text("Press ESCAPE to Resume", HEIGHT / 2 + 80, WIDTH / 4 - 50, arcade.color.BLACK, font_size=30,
+        arcade.draw_text("Press ESCAPE to Resume", HEIGHT / 2 + 55, WIDTH / 4 - 50, arcade.color.BLACK, font_size=30,
                          font_name="garamond")
         arcade.set_background_color(arcade.color.LIGHT_BLUE)
-    if current_screen == "pause2":
+    elif current_screen == "score":
+        arcade.set_background_color(arcade.color.LIGHT_BLUE)
+        arcade.draw_text(f"Score: {score}", HEIGHT / 2 - 100, WIDTH / 4, arcade.color.BLACK, font_size=60,
+                         font_name="garamond")
+        arcade.draw_text("To return to menu, press ESC", HEIGHT / 10, WIDTH / 2 - 20, arcade.color.BLACK, font_size=20,
+                         font_name="garamond")
+        arcade.draw_text("To replay, press SPACE", HEIGHT / 10, WIDTH / 2 - 60, arcade.color.BLACK, font_size=20,
+                         font_name="garamond")
+
+
+    elif current_screen == "play2":
+        draw_helicopter2(x, y)
+        for wallb in bottom_walls2:
+            draw_wall2b()
+        for wallt in top_walls2:
+            draw_wall2t()
+        arcade.draw_text(f"Score: {score}", 20, 690, arcade.color.WHITE)
+        arcade.set_background_color(arcade.color.BLACK)
+    elif current_screen == "pause2":
         draw_helicopter2(x, y)
         for wallb in bottom_walls2:
             draw_wallb(wallb)
@@ -268,10 +246,19 @@ def on_draw():
         arcade.draw_text(f"Score: {score}", 20, 690, arcade.color.WHITE)
         arcade.draw_text("PAUSE", HEIGHT / 2 + 150, WIDTH / 4, arcade.color.WHITE, font_size=60,
                          font_name="garamond")
-        arcade.draw_text("Press ESCAPE to Resume", HEIGHT / 2 + 80, WIDTH / 4 - 50, arcade.color.WHITE, font_size=30,
+        arcade.draw_text("Press ESCAPE to Resume", HEIGHT / 2 + 55, WIDTH / 4 - 50, arcade.color.WHITE, font_size=30,
                          font_name="garamond")
         arcade.set_background_color(arcade.color.BLACK)
-    if current_screen == "Instruction":
+    elif current_screen == "score2":
+        arcade.set_background_color(arcade.color.BLACK)
+        arcade.draw_text(f"Score: {score}", HEIGHT / 2 - 100, WIDTH / 4, arcade.color.WHITE, font_size=60,
+                         font_name="garamond")
+        arcade.draw_text("To return to menu, press ESC", HEIGHT / 10, WIDTH / 2 - 20, arcade.color.WHITE, font_size=20,
+                         font_name="garamond")
+        arcade.draw_text("To replay, press ENTER", HEIGHT / 10, WIDTH / 2 - 60, arcade.color.WHITE, font_size=20,
+                         font_name="garamond")
+
+    elif current_screen == "Instruction":
         arcade.set_background_color(arcade.color.LIGHT_BLUE)
         arcade.draw_text("Welcome to Hoppy Helecopter! To move your helicopter use W for up and S for down.",
                          HEIGHT / 2, WIDTH / 2 - 40, arcade.color.BLACK)
@@ -291,23 +278,6 @@ def on_draw():
         arcade.draw_text("W = Up:", HEIGHT / 10, WIDTH / 3 - 30, arcade.color.BLACK)
         arcade.draw_text("S = DOWN:", HEIGHT / 10, WIDTH / 3 - 60, arcade.color.BLACK)
         arcade.draw_text("SPACE = START:", HEIGHT / 10, WIDTH / 3 - 90, arcade.color.BLACK)
-    if current_screen == "score":
-        arcade.set_background_color(arcade.color.LIGHT_BLUE)
-        arcade.draw_text(f"Score: {score}", HEIGHT / 2 - 100, WIDTH / 4, arcade.color.BLACK, font_size=60,
-                         font_name="garamond")
-        arcade.draw_text("To return to menu, press ESC", HEIGHT / 10, WIDTH / 2 - 20, arcade.color.BLACK, font_size=20,
-                         font_name="garamond")
-        arcade.draw_text("To replay, press SPACE", HEIGHT / 10, WIDTH / 2 - 60, arcade.color.BLACK, font_size=20,
-                         font_name="garamond")
-    if current_screen == "score2":
-        arcade.set_background_color(arcade.color.BLACK)
-        arcade.draw_text(f"Score: {score}", HEIGHT / 2 - 100, WIDTH / 4, arcade.color.WHITE, font_size=60,
-                         font_name="garamond")
-        arcade.draw_text("To return to menu, press ESC", HEIGHT / 10, WIDTH / 2 - 20, arcade.color.WHITE, font_size=20,
-                         font_name="garamond")
-        arcade.draw_text("To replay, press ENTER", HEIGHT / 10, WIDTH / 2 - 60, arcade.color.WHITE, font_size=20,
-                         font_name="garamond")
-
 
 
     #Score Code
@@ -327,43 +297,43 @@ def on_key_press(key, modifiers):
     if current_screen == "menu":
         if key == arcade.key.SPACE:
             current_screen = "reset"
-        if key == arcade.key.I:
+        elif key == arcade.key.I:
             current_screen = "Instruction"
-        if key == arcade.key.ESCAPE:
+        elif key == arcade.key.ESCAPE:
             quit()
-        if key == arcade.key.ENTER:
+        elif key == arcade.key.ENTER:
             current_screen = "reset2"
-    if current_screen == "Instruction":
+    elif current_screen == "Instruction":
         if key == arcade.key.ESCAPE:
             current_screen = "menu"
-    if current_screen == "play":
+    elif current_screen == "play":
         if key == arcade.key.W:
             up_pressed = True
-        if key == arcade.key.S:
+        elif key == arcade.key.S:
             down_pressed = True
-        if key == arcade.key.ESCAPE:
+        elif key == arcade.key.ESCAPE:
             current_screen = "pause"
-    if current_screen == "pause":
+    elif current_screen == "pause":
         if key == arcade.key.ESCAPE:
             current_screen = "play"
-    if current_screen == "score":
+    elif current_screen == "score":
         if key == arcade.key.SPACE:
             current_screen = "reset"
-        if key == arcade.key.ESCAPE:
+        elif key == arcade.key.ESCAPE:
             current_screen = "menu"
 
 
-    if current_screen == "score2":
+    elif current_screen == "score2":
         if key == arcade.key.ENTER:
             current_screen = "reset2"
-        if key == arcade.key.ESCAPE:
+        elif key == arcade.key.ESCAPE:
             current_screen = "menu"
-    if current_screen == "play2":
+    elif current_screen == "play2":
         if key == arcade.key.W:
             up_pressed = True
-        if key == arcade.key.ESCAPE:
+        elif key == arcade.key.ESCAPE:
             current_screen = "pause2"
-    if current_screen == "pause2":
+    elif current_screen == "pause2":
         if key == arcade.key.ESCAPE:
             current_screen = "play2"
 
@@ -374,7 +344,7 @@ def on_key_release(key, modifiers):
     if current_screen == "play" or "play2":
         if key == arcade.key.W:
             up_pressed = False
-        if key == arcade.key.S:
+        elif key == arcade.key.S:
             down_pressed = False
 
 
@@ -463,8 +433,7 @@ def draw_helicopter3(xx, y):
     arcade.draw_xywh_rectangle_filled(xx + 297.5, y + 377.5, -25, -5, arcade.color.BLACK)
     arcade.draw_xywh_rectangle_filled(xx + 125, y + 310, 5, -10, arcade.color.BLACK)
     arcade.draw_xywh_rectangle_filled(xx + 175, y + 310, -5, -10, arcade.color.BLACK)
-    arcade.draw_xywh_rectangle_filled(xx + 200, y + 300, -100, -5, arcade.color.WHITE)
-
+    arcade.draw_xywh_rectangle_filled(xx + 200, y + 300, -100, -5, arcade.color.BLACK)
 
 
 
@@ -530,32 +499,6 @@ def draw_wall2t():
                                           wall2t[WALLt_WIDTH],
                                           wall2t[WALLt_HEIGHT],
                                           wall2t[WALLt_COLOR])
-
-def draw_cloud(cloud_amount):
-        for clouds in all_clouds:
-            arcade.draw_circle_filled(clouds[CLD_X],
-                                      clouds[CLD_Y],
-                                      clouds[CLD_R],
-                                      clouds[CLD_COLOR])
-        # cloud1[CLD_X] = random.randrange(50, 1300)
-        # cloud1[CLD_Y] = random.randrange(50, 600)
-        # cloud2[CLD_X] = cloud1[CLD_X] + 25
-        # cloud2[CLD_Y] = cloud1[CLD_Y] - 25
-        # cloud3[CLD_X] = cloud1[CLD_X] + 85
-        # cloud3[CLD_Y] = cloud1[CLD_Y]
-        # cloud4[CLD_X] = cloud1[CLD_X] + 25
-        # cloud4[CLD_Y] = cloud1[CLD_Y] + 25
-        # cloud5[CLD_X] = cloud1[CLD_X] + 40
-        # cloud5[CLD_Y] = cloud1[CLD_Y] - 15
-        # cloud6[CLD_X] = cloud1[CLD_X] + 40
-        # cloud6[CLD_Y] = cloud1[CLD_Y] + 15
-        # cloud7[CLD_X] = cloud1[CLD_X] + 50
-        # cloud7[CLD_Y] = cloud1[CLD_Y] + 5
-        # cloud8[CLD_X] = cloud1[CLD_X] + 55
-        # cloud8[CLD_Y] = cloud1[CLD_Y] - 20
-
-
-
 
 
 if __name__ == '__main__':
