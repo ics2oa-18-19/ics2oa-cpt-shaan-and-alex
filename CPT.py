@@ -60,7 +60,7 @@ all_hhb = [helihitbox1, helihitbox2, helihitbox3]
 
 
 def update(delta_time):
-    global up_pressed, down_pressed, x, xx, y, current_screen, top_walls, bottom_walls, score, all_hhb, cloud_amount
+    global up_pressed, down_pressed, x, xx, y, current_screen, top_walls, bottom_walls, score, all_hhb
     if current_screen == "start":
         up_pressed = True
         current_screen = "menu"
